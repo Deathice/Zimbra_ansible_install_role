@@ -1,0 +1,6 @@
+server=8.8.8.8
+listen-address=127.0.0.1
+domain={{ ansible_domain }}
+mx-host={{ ansible_domain }},{{ ansible_hostname }}.{{ ansible_domain }},0
+address=/{{ ansible_hostname }}.{{ ansible_domain }}/{{ ansible_default_ipv4.address }}
+conf-dir=/etc/dnsmasq.d,.rpmnew,.rpmsave,.rpmorig
