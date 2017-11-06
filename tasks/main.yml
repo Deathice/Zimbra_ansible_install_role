@@ -42,6 +42,7 @@
 
     - name: Moving dnsmasq to .original
       copy:
+        remote_src: true
         src: /etc/dnsmasq.conf
         dest: /etc/dnsmasq.conf.original
 
