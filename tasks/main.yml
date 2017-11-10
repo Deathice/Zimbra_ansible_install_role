@@ -1,5 +1,32 @@
 ---
 # tasks file for ITM_zimbra_install
+- name: Download Zimbra package
+  block:
+    - name: version
+      shell: rpm -qa '(oraclelinux|sl|redhat|centos)-release(|-server)'|cut -d"." -f3
+      register: version
+
+#    - name: Downloading Zimbra Collaboration 8.7.11 for CentOS/RedHat 7
+#      get_url:
+#        url: https://files.zimbra.com/downloads/8.7.11_GA/{{ zim_unarchive }}.tgz
+#        dest: /tmp/zcs
+#      async: 3600
+#      poll: 0
+#      register: dw_file
+    - name: Create unarchive directory
+      file:
+        path: /tmp/zcs
+        state: directory
+
+    - name: Unarchive zimbra file
+      unarchive:
+        src: "{{ zim_url }}"
+        dest: /tmp/zcs
+        remote_src: yes
+      async: 3600
+      poll: 0
+      register: dw_file
+
 - name: Generating variables
   block:
     - name: randomham
@@ -60,46 +87,33 @@
         state: started
         enabled: true
 
-    - name: create /tmp/zcs directory
-      file:
-        path: /tmp/zcs
-        state: directory
-
-    - name: Copy config script file
+    - name: Copy config script zimbra file
       template:
         src: 'installZimbraScript.j2'
         dest: /tmp/zcs/installZimbraScript
 
-    - name: Copy config script file
+    - name: Copy config script keystrokes file
       template:
         src: 'installZimbra-keystrokes.j2'
         dest: /tmp/zcs/installZimbra-keystrokes
 
 - name: Installing Zimbra
   block:
-    - name: version
-      shell: rpm -qa '(oraclelinux|sl|redhat|centos)-release(|-server)'|cut -d"." -f3
-      register: version
-
-    - name: Downloading Zimbra Collaboration 8.7.11 for CentOS/RedHat 7
-      get_url:
-        url: https://files.zimbra.com/downloads/8.7.11_GA/zcs-8.7.11_GA_1854.RHEL7_64.20170531151956.tgz
-        dest: /tmp/zcs
-
-    - name: Unarchive zimbra file
-      unarchive:
-        src: /tmp/zcs/zcs-8.7.11_GA_1854.RHEL7_64.20170531151956.tgz
-        dest: /tmp/zcs
-        remote_src: yes
+    - name: Checking download status
+      async_status: jid={{ dw_file.ansible_job_id }}
+      register: dw_status
+      until: dw_status.finished
+      retries: 80
 
     - name: Installing Zimbra Collaboration just the Software
       shell: ./install.sh -s < /tmp/zcs/installZimbra-keystrokes
       args:
-        chdir: /tmp/zcs/zcs-8.7.11_GA_1854.RHEL7_64.20170531151956
+        chdir: /tmp/zcs/{{ zim_unarchive }}
 
     - name: Installing Zimbra Collaboration injecting the configuration
       shell: /opt/zimbra/libexec/zmsetup.pl -c /tmp/zcs/installZimbraScript
 
     - name: Change to zimbra user and execute zmcontrol restart
       shell: su - zimbra -c 'zmcontrol restart'
-      when: version.stdout == 'el7'
+    when: version.stdout == 'el7' and dw_status.status_code == '200'
+    
