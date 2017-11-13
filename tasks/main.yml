@@ -6,17 +6,14 @@
       shell: rpm -qa '(oraclelinux|sl|redhat|centos)-release(|-server)'|cut -d"." -f3
       register: version
 
-#    - name: Downloading Zimbra Collaboration 8.7.11 for CentOS/RedHat 7
-#      get_url:
-#        url: https://files.zimbra.com/downloads/8.7.11_GA/{{ zim_unarchive }}.tgz
-#        dest: /tmp/zcs
-#      async: 3600
-#      poll: 0
-#      register: dw_file
-    - name: Create unarchive directory
-      file:
-        path: /tmp/zcs
-        state: directory
+    - name: Copy zimbra file
+      copy: 
+        src: "{{ zim_tar }}"
+        dest: /tmp/zcs
+      async: 3600
+      poll: 0
+      register: zim_file_status
+      ignore_errors: true
 
     - name: Unarchive zimbra file
       unarchive:
@@ -26,6 +23,7 @@
       async: 3600
       poll: 0
       register: dw_file
+      when: zim_file_status.failed
 
 - name: Generating variables
   block:
@@ -104,6 +102,13 @@
       register: dw_status
       until: dw_status.finished
       retries: 80
+      when: zim_file_status.failed
+
+    - name: Checking copy status
+      async_status: jid={{ zim_file_status.job_id }}
+      register: zfs
+      until: zfs.finished
+      retries: 80
 
     - name: Installing Zimbra Collaboration just the Software
       shell: ./install.sh -s < /tmp/zcs/installZimbra-keystrokes
@@ -115,5 +120,5 @@
 
     - name: Change to zimbra user and execute zmcontrol restart
       shell: su - zimbra -c 'zmcontrol restart'
-    when: version.stdout == 'el7' and dw_status.status_code == '200'
+    when: version.stdout == 'el7'
     
