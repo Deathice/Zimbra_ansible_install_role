@@ -2,6 +2,6 @@
 # vars file for ITM_zimbra_install
 pass_config: 'S3gur1d4d2017'
 srv_hostname: 'mail.corp.itm.gt'
-zim_url: //files.zimbra.com/downloads/8.7.11_GA/zcs-8.7.11_GA_1854.RHEL7_64.20170531151956.tgz
+zim_url: https://files.zimbra.com/downloads/8.7.11_GA/zcs-8.7.11_GA_1854.RHEL7_64.20170531151956.tgz
 zim_unarchive: zcs-8.7.11_GA_1854.RHEL7_64.20170531151956
 zim_tar: zcs-8.7.11_GA_1854.RHEL7_64.20170531151956.tgz
