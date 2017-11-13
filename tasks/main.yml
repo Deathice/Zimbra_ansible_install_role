@@ -120,5 +120,5 @@
 
     - name: Change to zimbra user and execute zmcontrol restart
       shell: su - zimbra -c 'zmcontrol restart'
-    when: version.stdout == 'el7'
+  when: version.stdout == 'el7'
     
