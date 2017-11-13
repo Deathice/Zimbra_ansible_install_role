@@ -10,16 +10,13 @@
       copy: 
         src: "{{ zim_tar }}"
         dest: /tmp/zcs
-      async: 3600
-      poll: 0
       register: zim_file_status
       ignore_errors: true
 
-    - name: Unarchive zimbra file
-      unarchive:
-        src: "{{ zim_url }}"
+    - name: Downloading zimbra file in background
+      get_url:
+        url: "{{ zim_url }}"
         dest: /tmp/zcs
-        remote_src: yes
       async: 3600
       poll: 0
       register: dw_file
@@ -104,11 +101,12 @@
       retries: 80
       when: zim_file_status.failed
 
-    - name: Checking copy status
-      async_status: jid={{ zim_file_status.job_id }}
-      register: zfs
-      until: zfs.finished
-      retries: 80
+    - name: unarchive zimbra file
+      unarchive:
+        src: /tmp/zcs/{{ zim_tar }}
+        dest: /tmp/zcs
+        remote_src: true
+      when: dw_status.exist
 
     - name: Installing Zimbra Collaboration just the Software
       shell: ./install.sh -s < /tmp/zcs/installZimbra-keystrokes
