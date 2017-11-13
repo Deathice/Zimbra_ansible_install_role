@@ -6,6 +6,11 @@
       shell: rpm -qa '(oraclelinux|sl|redhat|centos)-release(|-server)'|cut -d"." -f3
       register: version
 
+    - name: Create untar directory
+      file:
+        path: /tmp/zcs
+        state: directory
+
     - name: Copy zimbra file
       copy: 
         src: "{{ zim_tar }}"
