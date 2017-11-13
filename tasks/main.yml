@@ -103,7 +103,7 @@
       async_status: jid={{ dw_file.ansible_job_id }}
       register: dw_status
       until: dw_status.finished
-      retries: 180
+      retries: 980
       when: zim_file_status.failed
 
     - name: unarchive zimbra file
