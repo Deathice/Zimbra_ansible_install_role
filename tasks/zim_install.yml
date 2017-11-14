@@ -1,0 +1,28 @@
+---
+- name: Initializing ITM_zimbra_install role
+  hosts: remote
+  become: true
+  remote_user: root
+  gather_facts: true
+
+  tasks:
+    - name: Installing Zimbra
+      block:
+        - name: unarchive zimbra file
+          unarchive:
+            src: /tmp/zcs/{{ zim_tar }}
+            dest: /tmp/zcs
+            remote_src: true
+
+        - name: Installing Zimbra Collaboration just the Software
+          shell: ./install.sh -s < /tmp/zcs/installZimbra-keystrokes
+          args:
+            chdir: /tmp/zcs/{{ zim_unarchive }}
+
+        - name: Installing Zimbra Collaboration injecting the configuration
+          shell: /opt/zimbra/libexec/zmsetup.pl -c /tmp/zcs/installZimbraScript
+    
+        - name: Change to zimbra user and execute zmcontrol restart
+          shell: su - zimbra -c 'zmcontrol restart'
+      when: version.stdout == 'el7'
+
