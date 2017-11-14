@@ -32,6 +32,8 @@ Including an example of how to use your role (for instance, with variables passe
   roles:
     - ITM_zimbra_install
 
+- import_playbook: ITM_zimbra_install/tasks/zim_install.yml
+
 ```
 License
 -------
