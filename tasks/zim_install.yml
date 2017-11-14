@@ -5,7 +5,10 @@
   remote_user: root
   gather_facts: true
 
+
   tasks:
+    - include_vars: ../vars/main.yml
+
     - name: Installing Zimbra
       block:
         - name: unarchive zimbra file
