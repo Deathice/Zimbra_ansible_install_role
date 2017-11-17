@@ -5,12 +5,17 @@
   remote_user: root
   gather_facts: true
 
-
   tasks:
     - include_vars: ../vars/main.yml
 
     - name: Installing Zimbra
       block:
+        - name: Configuring /etc/hosts
+          lineinfile:
+            path: /etc/hosts
+            insertbefore: '^127.0.0.1'
+            line: '{{ ansible_default_ipv4.address }} {{ ansible_fqdn }} {{ ansible_hostname }}'
+
         - name: unarchive zimbra file
           unarchive:
             src: /tmp/zcs/{{ zim_tar }}

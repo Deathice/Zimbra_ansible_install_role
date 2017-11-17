@@ -46,12 +46,6 @@
     - name: Configuring hostname
       shell: hostnamectl set-hostname {{ srv_hostname }}
 
-    - name: Configuring /etc/hosts
-      lineinfile:
-        path: /etc/hosts
-        insertbefore: '^127.0.0.1'
-        line: '{{ ansible_default_ipv4.address }} {{ ansible_fqdn }} {{ ansible_hostname }}'
-
     - name: Installing packages
       yum:
         name: "{{ item }}"
