@@ -87,6 +87,10 @@
         state: started
         enabled: true
 
+    - name: Stopping postfix of system
+      service:
+        name:
+
     - name: Copy config script zimbra file
       template:
         src: 'installZimbraScript.j2'
@@ -103,3 +107,9 @@
       until: dw_status.finished
       retries: 980
       when: zim_file_status.failed
+
+    - name: Disable and stop postfix
+      service:
+        name: postfix
+        state: stopped
+        enabled: False
