@@ -6,7 +6,7 @@ Requirements
 ------------
 
 - Ansible v. 2.4+.
-- Create a playbook with any name and copy the 'example playbook' content, do that outside of your role.
+- Create a playbook with any name and copy the 'example playbook' content, do it outside of your role.
 
 
 
