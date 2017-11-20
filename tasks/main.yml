@@ -81,10 +81,6 @@
         state: started
         enabled: true
 
-    - name: Stopping postfix of system
-      service:
-        name:
-
     - name: Copy config script zimbra file
       template:
         src: 'installZimbraScript.j2'
