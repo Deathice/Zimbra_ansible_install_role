@@ -13,7 +13,7 @@
 
     - name: Copy zimbra file
       copy: 
-        src: "{{ zim_tar }}"
+        src: "{{ zim_unarchive }}.tgz"
         dest: /tmp/zcs
       register: zim_file_status
       ignore_errors: true
