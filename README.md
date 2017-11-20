@@ -1,22 +1,26 @@
-Role Name
+ITM_zimbra_ansible_install
 =========
-
-A brief description of the role goes here.
+Install zimbra.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- Ansible v. 2.4+.
+- Create a playbook with any name and copy the 'example playbook' content, do it outside of your role.
+- Edit the remote group into test/inventory
+
+
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+Edit the variables into vars/main.yml file with:
 
-Dependencies
-------------
+- pass_config: 'Variable for the password that use the installation.'
+- srv_hostname: 'fqdn of your machine'
+- zim_url: URL for download the zimbra compress file.
+- zim_unarchive: Name of you compress file unarchive
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
 Example Playbook
 ----------------
@@ -30,17 +34,13 @@ Including an example of how to use your role (for instance, with variables passe
   remote_user: root
 
   roles:
-    - ITM_zimbra_install
+    - ITM_zimbra_ansible_install
 
-- import_playbook: ITM_zimbra_install/tasks/zim_install.yml
+- import_playbook: ITM_zimbra_ansible_install/tasks/zim_install.yml
 
 ```
-License
--------
-
-BSD
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Kevyn Perez kperez@itm.gt
