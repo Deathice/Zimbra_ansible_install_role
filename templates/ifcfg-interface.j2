@@ -1,0 +1,14 @@
+# configured via ansible
+BOOTPROTO="static"
+DEVICE="{{ ansible_default_ipv4.interface }}"
+ONBOOT=yes
+TYPE=Ethernet
+IPADDR="{{ ip_client }}"
+NETMASK="{{ ansible_default_ipv4.netmask }}" 
+GATEWAY="{{ ansible_default_ipv4.gateway }}" 
+DEFROUTE=yes
+PEERDNS=no
+PEERROUTES=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=no
+NAME="{{ ansible_default_ipv4.interface }}"
