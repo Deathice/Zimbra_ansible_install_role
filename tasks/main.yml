@@ -55,6 +55,7 @@
         - 'net-tools'
         - 'nmap-ncat'
         - 'dnsmasq'
+        - 'libselinux-python'
 
     - name: System update
       yum:
