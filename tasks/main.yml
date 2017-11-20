@@ -97,6 +97,8 @@
         owner: root
         group: root
         mode: 0644
+      notify:
+        - restart dnsmasq
 
     - name: Copy config script zimbra file
       template:
