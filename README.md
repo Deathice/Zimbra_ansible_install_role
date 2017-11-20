@@ -20,6 +20,8 @@ Edit the variables into vars/main.yml file with:
 - srv_hostname: 'fqdn of your machine'
 - zim_url: URL for download the zimbra compress file.
 - zim_unarchive: Name of you compress file unarchive
+- ip_client: Server IP
+- ip_dns: DNS Server IP
 
 
 Example Playbook
