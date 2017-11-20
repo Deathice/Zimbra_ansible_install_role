@@ -82,6 +82,22 @@
         state: started
         enabled: true
 
+    - name: Copy ifcfg-interface template
+      template:
+        src: ifcfg-interface.j2
+        dest: /etc/sysconfig/network-scripts/ifcfg-{{ ansible_default_ipv4.interface }}
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Copy resolv.conf template
+      template:
+        src: resolv.conf.j2
+        dest: /etc/resolv.conf
+        owner: root
+        group: root
+        mode: 0644
+
     - name: Copy config script zimbra file
       template:
         src: 'installZimbraScript.j2'
