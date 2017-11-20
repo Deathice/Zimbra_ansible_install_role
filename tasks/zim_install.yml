@@ -26,7 +26,7 @@
 
         - name: unarchive zimbra file
           unarchive:
-            src: /tmp/zcs/{{ zim_tar }}
+            src: /tmp/zcs/{{ zim_unarchive }}.tgz
             dest: /tmp/zcs
             remote_src: true
 
