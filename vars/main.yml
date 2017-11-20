@@ -4,3 +4,5 @@ pass_config: 'S3gur1d4d2017'
 srv_hostname: 'mail.corp.itm.gt'
 zim_url: https://files.zimbra.com/downloads/8.7.11_GA/zcs-8.7.11_GA_1854.RHEL7_64.20170531151956.tgz
 zim_unarchive: zcs-8.7.11_GA_1854.RHEL7_64.20170531151956
+ip_client: 192.168.13.177
+ip_dns: 192.168.13.253
