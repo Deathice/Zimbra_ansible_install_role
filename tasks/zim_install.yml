@@ -21,8 +21,10 @@
         - name: Configuring /etc/hosts
           lineinfile:
             path: /etc/hosts
-            insertbefore: '^127.0.0.1'
+            regexp: '^{{ ansible_default_ipv4.address }}.*'
             line: '{{ ansible_default_ipv4.address }} {{ ansible_fqdn }} {{ ansible_hostname }}'
+          tags:
+            - test
 
         - name: unarchive zimbra file
           unarchive:
@@ -40,5 +42,7 @@
     
         - name: Change to zimbra user and execute zmcontrol restart
           shell: su - zimbra -c 'zmcontrol restart'
-      when: version.stdout == 'el7'
+      when: 
+        - ansible_os_family == 'RedHat'
+        - ansible_distribution_major_version == '7'
 
