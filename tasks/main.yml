@@ -29,9 +29,19 @@
       shell: date +%s|sha256sum|base64|head -c 10
       register: randomham
 
+    - name: waiting a few seconds
+      wait_for:
+        timeout: 1
+      delegate_to: localhost
+
     - name: randomspam
       shell: date +%s|sha256sum|base64|head -c 10
       register: randomspam
+
+    - name: waiting a few seconds
+      wait_for:
+        timeout: 1
+      delegate_to: localhost
 
     - name: randomvirus
       shell: date +%s|sha256sum|base64|head -c 10
