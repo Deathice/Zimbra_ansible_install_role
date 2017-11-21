@@ -32,59 +32,13 @@ Including an example of how to use your role (for instance, with variables passe
 ---
 - name: Initializing ITM_zimbra_ansible_install role
   hosts: remote
-  become: true
+  become: false
   remote_user: root
   gather_facts: true
 
   roles:
     - ITM_zimbra_ansible_install
 
-- name: Continue Zimbra Installation
-  hosts: remote
-  become: true
-  remote_user: root
-  gather_facts: true
-
-  tasks:
-    - include_vars: ITM_zimbra_ansible_install/vars/main.yml
-
-    - name: Configure dnsmasq
-      template:
-        src: ITM_zimbra_ansible_install/templates/dnsmasq.conf.j2
-        dest: /etc/dnsmasq.conf
-        owner: root
-        group: root
-        mode: 644
-
-    - name: Installing Zimbra
-      block:
-        - name: Configuring /etc/hosts
-          lineinfile:
-            path: /etc/hosts
-            regexp: '^{{ ansible_default_ipv4.address }}.*'
-            line: '{{ ansible_default_ipv4.address }} {{ ansible_fqdn }} {{ ansible_hostname }}'
-          tags:
-            - test
-
-        - name: unarchive zimbra file
-          unarchive:
-            src: /tmp/zcs/{{ zim_unarchive }}.tgz
-            dest: /tmp/zcs
-            remote_src: true
-
-        - name: Installing Zimbra Collaboration just the Software
-          shell: ./install.sh -s < /tmp/zcs/installZimbra-keystrokes
-          args:
-            chdir: /tmp/zcs/{{ zim_unarchive }}
-
-        - name: Installing Zimbra Collaboration injecting the configuration
-          shell: /opt/zimbra/libexec/zmsetup.pl -c /tmp/zcs/installZimbraScript
-    
-        - name: Change to zimbra user and execute zmcontrol restart
-          shell: su - zimbra -c 'zmcontrol restart'
-      when: 
-        - ansible_os_family == 'RedHat'
-        - ansible_distribution_major_version == '7'
 
 ```
 
