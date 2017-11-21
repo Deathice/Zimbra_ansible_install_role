@@ -53,21 +53,21 @@
         msg: "Current: {{ ansible_fqdn }} {{ ansible_domain }} {{ ansible_hostname }}"
 
     - name: Changing FQDN
-      shell: hostnamectl set-hostname {{ srv_fqdn }}
+      shell: hostnamectl set-hostname {{ srv_hostname }}
       when:
-        - ansible_fqdn != srv_fqdn
+        - ansible_fqdn != srv_hostname
 
     - name: Set Fact for ansible_fqdn
       set_fact:
-        ansible_fqdn: "{{ srv_fqdn }}"
+        ansible_fqdn: "{{ srv_hostname }}"
 
     - name: Set Fact for ansible_domain
       set_fact:
-        ansible_domain: "{{ srv_fqdn.split('.')[1:] | join('.') }}"
+        ansible_domain: "{{ srv_hostname.split('.')[1:] | join('.') }}"
 
     - name: Set Fact for ansible_hostname
       set_fact:
-        ansible_hostname: "{{ srv_fqdn.split('.')[0] }}"
+        ansible_hostname: "{{ srv_hostname.split('.')[0] }}"
 
     - name: Current HOSTNAME
       debug:
