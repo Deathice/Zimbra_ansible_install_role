@@ -2,10 +2,6 @@
 # tasks file for ITM_zimbra_install
 - name: Download Zimbra package
   block:
-    - name: version
-      shell: rpm -qa '(oraclelinux|sl|redhat|centos)-release(|-server)'|cut -d"." -f3
-      register: version
-
     - name: Create untar directory
       file:
         path: /tmp/zcs
