@@ -122,3 +122,5 @@
         name: postfix
         state: stopped
         enabled: False
+
+    - meta: flush_handlers
