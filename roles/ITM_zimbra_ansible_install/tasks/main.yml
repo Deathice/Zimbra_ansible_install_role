@@ -106,12 +106,6 @@
         group: root
         mode: 644
 
-    - name: Start and enable dnsmasq service
-      service:
-        name: dnsmasq
-        state: started
-        enabled: true
-
     - name: Copy ifcfg-interface template
       template:
         src: ifcfg-interface.j2
@@ -127,8 +121,12 @@
         owner: root
         group: root
         mode: 0644
-      notify:
-        - restart dnsmasq
+
+    - name: Start and enable dnsmasq service
+      service:
+        name: dnsmasq
+        state: restarted
+        enabled: true
 
     - name: Copy config script zimbra file
       template:
@@ -190,5 +188,3 @@
       when: 
         - ansible_os_family == 'RedHat'
         - ansible_distribution_major_version == '7'
-
-    - meta: flush_handlers
