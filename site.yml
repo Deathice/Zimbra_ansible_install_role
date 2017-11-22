@@ -1,0 +1,9 @@
+---
+- name: Initializing ITM_zimbra_ansible_install role
+  hosts: remote
+  become: false
+  remote_user: root
+  gather_facts: true
+
+  roles:
+    - ITM_zimbra_ansible_install
