@@ -1,0 +1,14 @@
+---
+- name: Test for waiting role
+  hosts: remote
+  become: true
+  remote_user: root
+  gather_facts: true
+
+  tasks:
+    - name: Waiting for port 25 respond
+      wait_for:
+        host: "{{ inventory_hostname }}"
+        port: 25
+        delay: 1
+        timeout: 4300
