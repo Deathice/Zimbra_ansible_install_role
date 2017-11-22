@@ -47,7 +47,6 @@
       shell: date +%s|sha256sum|base64|head -c 10
       register: randomvirus
 
-
     - name: Current HOSTNAME
       debug:
         msg: "Current: {{ ansible_fqdn }} {{ ansible_domain }} {{ ansible_hostname }}"
@@ -72,7 +71,6 @@
     - name: Current HOSTNAME
       debug:
         msg: "NEW Current: {{ ansible_fqdn }} {{ ansible_domain }} {{ ansible_hostname }}"
-
 
 - name: Manipulating files, packages and services
   block:
