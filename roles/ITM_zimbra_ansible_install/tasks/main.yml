@@ -84,6 +84,7 @@
         - 'nmap-ncat'
         - 'dnsmasq'
         - 'libselinux-python'
+        - 'firewalld'
 
     - name: System update
       yum:
@@ -126,14 +127,6 @@
         state: restarted
         enabled: true
 
-    - name: Enable external ports for Zimbra
-      firewalld:
-        port: "{{ item }}"
-        permanent: true
-        state: enabled
-      with_items:
-        - "{{ zim_ports }}"
-
     - name: Start and enable firewalld service
       service:
         name: firewalld
@@ -171,32 +164,37 @@
         group: root
         mode: 644
 
-    - name: Installing Zimbra
-      block:
-        - name: Configuring /etc/hosts
-          lineinfile:
-            path: /etc/hosts
-            regexp: '^{{ ansible_default_ipv4.address }}.*'
-            line: '{{ ansible_default_ipv4.address }} {{ ansible_fqdn }} {{ ansible_hostname }}'
-          tags:
-            - test
+- name: Installing Zimbra
+  block:
+    - name: Configuring /etc/hosts
+      lineinfile:
+        path: /etc/hosts
+        regexp: '^{{ ansible_default_ipv4.address }}.*'
+        line: '{{ ansible_default_ipv4.address }} {{ ansible_fqdn }} {{ ansible_hostname }}'
+    - name: unarchive zimbra file
+      unarchive:
+        src: /tmp/zcs/{{ zim_unarchive }}.tgz
+        dest: /tmp/zcs
+        remote_src: true
+    - name: Installing Zimbra Collaboration just the Software
+      shell: ./install.sh -s < /tmp/zcs/installZimbra-keystrokes
+      args:
+        chdir: /tmp/zcs/{{ zim_unarchive }}
+    - name: Installing Zimbra Collaboration injecting the configuration
+      shell: /opt/zimbra/libexec/zmsetup.pl -c /tmp/zcs/installZimbraScript
 
-        - name: unarchive zimbra file
-          unarchive:
-            src: /tmp/zcs/{{ zim_unarchive }}.tgz
-            dest: /tmp/zcs
-            remote_src: true
+    - name: Change to zimbra user and execute zmcontrol restart
+      shell: su - zimbra -c 'zmcontrol restart'
+  when: 
+    - ansible_os_family == 'RedHat'
+    - ansible_distribution_major_version == '7'
 
-        - name: Installing Zimbra Collaboration just the Software
-          shell: ./install.sh -s < /tmp/zcs/installZimbra-keystrokes
-          args:
-            chdir: /tmp/zcs/{{ zim_unarchive }}
-
-        - name: Installing Zimbra Collaboration injecting the configuration
-          shell: /opt/zimbra/libexec/zmsetup.pl -c /tmp/zcs/installZimbraScript
-    
-        - name: Change to zimbra user and execute zmcontrol restart
-          shell: su - zimbra -c 'zmcontrol restart'
-      when: 
-        - ansible_os_family == 'RedHat'
-        - ansible_distribution_major_version == '7'
+- name: Enable ports
+  block:
+    - name: Enable external ports for Zimbra
+      firewalld:
+        port: "{{ item }}"
+        state: enabled
+        permanent: true
+      with_items:
+        - "{{ zim_ports }}"
