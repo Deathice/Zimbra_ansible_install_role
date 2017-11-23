@@ -6,3 +6,17 @@ zim_url: https://files.zimbra.com/downloads/8.7.11_GA/zcs-8.7.11_GA_1854.RHEL7_6
 zim_unarchive: "{{ zim_url |regex_search('(zcs.*[0-9])')}}" 
 ip_client: 192.168.13.177
 ip_dns: 192.168.13.253
+zim_ports:
+  - '25/tcp'
+  - '80/tcp'
+  - '110/tcp'
+  - '143/tcp'
+  - '443/tcp'
+  - '465/tcp'
+  - '587/tcp'
+  - '993/tcp'
+  - '995/tcp'
+  - '3443/tcp'
+  - '5222/tcp'
+  - '5223/tcp'
+  - '9071/tcp'

@@ -132,19 +132,7 @@
         permanent: true
         state: enabled
       with_items:
-        - '25/tcp'
-        - '80/tcp'
-        - '110/tcp'
-        - '143/tcp'
-        - '443/tcp'
-        - '465/tcp'
-        - '587/tcp'
-        - '993/tcp'
-        - '995/tcp'
-        - '3443/tcp'
-        - '5222/tcp'
-        - '5223/tcp'
-        - '9071/tcp'
+        - "{{ zim_ports }}"
 
     - name: Start and enable firewalld service
       service:
