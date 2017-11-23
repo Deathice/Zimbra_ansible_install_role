@@ -1,7 +1,7 @@
 ---
 - name: Test for waiting role
   hosts: remote
-  become: false
+  become: true
   remote_user: root
   gather_facts: true
 
@@ -13,3 +13,4 @@
         delay: 4
         timeout: 8300
       delegate_to: localhost
+      become: false
