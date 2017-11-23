@@ -6,10 +6,10 @@
   gather_facts: true
 
   tasks:
-    - name: Waiting for port 25 respond
+    - name: Waiting for port 7071 respond
       wait_for:
         host: "{{ inventory_hostname }}"
-        port: 25
+        port: 7071
         delay: 4
         timeout: 8300
       delegate_to: localhost
