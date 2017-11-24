@@ -171,15 +171,18 @@
         path: /etc/hosts
         regexp: '^{{ ansible_default_ipv4.address }}.*'
         line: '{{ ansible_default_ipv4.address }} {{ ansible_fqdn }} {{ ansible_hostname }}'
+
     - name: unarchive zimbra file
       unarchive:
         src: /tmp/zcs/{{ zim_unarchive }}.tgz
         dest: /tmp/zcs
         remote_src: true
+
     - name: Installing Zimbra Collaboration just the Software
       shell: ./install.sh -s < /tmp/zcs/installZimbra-keystrokes
       args:
         chdir: /tmp/zcs/{{ zim_unarchive }}
+
     - name: Installing Zimbra Collaboration injecting the configuration
       shell: /opt/zimbra/libexec/zmsetup.pl -c /tmp/zcs/installZimbraScript
 
