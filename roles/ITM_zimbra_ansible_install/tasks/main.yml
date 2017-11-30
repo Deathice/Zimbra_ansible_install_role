@@ -45,7 +45,7 @@
 
     - name: randomvirus
       set_fact:
-        randomvirus: "{{ lookup('password', '/dev/null chars=ascii_letters,digits length=15') }}"
+        randomvirus: "{{ lookup('password', '/dev/null chars=ascii_letters,digits length=10') }}"
 
     - name: waiting a few seconds
       wait_for:
@@ -153,7 +153,7 @@
 
     - name: Copy config script zimbra file
       template:
-        src: installZimbraScript.j2
+        src: 'installZimbraScript.j2'
         dest: /tmp/zcs/installZimbraScript
 
     - name: Copy config script keystrokes file
