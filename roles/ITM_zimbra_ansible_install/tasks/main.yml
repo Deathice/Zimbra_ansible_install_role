@@ -25,9 +25,9 @@
 
 - name: Generating variables
   block:
-    - name: randomham
-      shell: date +%s|sha256sum|base64|head -c 10
-      register: randomham
+    - name: randomspam
+      set_fact:
+        randomham: "{{ lookup('password', '/dev/null chars=ascii_letters,digits length=10') }}"
 
     - name: waiting a few seconds
       wait_for:
@@ -35,8 +35,8 @@
       delegate_to: localhost
 
     - name: randomspam
-      shell: date +%s|sha256sum|base64|head -c 10
-      register: randomspam
+      set_fact:
+        randomspam: "{{ lookup('password', '/dev/null chars=ascii_letters,digits length=10') }}"
 
     - name: waiting a few seconds
       wait_for:
@@ -44,15 +44,25 @@
       delegate_to: localhost
 
     - name: randomvirus
-      shell: date +%s|sha256sum|base64|head -c 10
-      register: randomvirus
+      set_fact:
+        randomvirus: "{{ lookup('password', '/dev/null chars=ascii_letters,digits length=15') }}"
+
+    - name: waiting a few seconds
+      wait_for:
+        timeout: 1
+      delegate_to: localhost
+
+    - name: Generating password
+      set_fact:
+        pass_config: "{{ lookup('password', '/dev/null chars=ascii_letters,digits length=10') }}"
 
     - name: Current HOSTNAME
       debug:
         msg: "Current: {{ ansible_fqdn }} {{ ansible_domain }} {{ ansible_hostname }}"
 
     - name: Changing FQDN
-      shell: hostnamectl set-hostname {{ srv_hostname }}
+      hostname: 
+        name: "{{ srv_hostname }}"
       when:
         - ansible_fqdn != srv_hostname
 
@@ -74,6 +84,14 @@
 
 - name: Manipulating files, packages and services
   block:
+    - name: Setting admin password
+      copy:
+        content: "zimbra_pass: {{ pass_config }}"
+        dest: "{{ ansible_user_dir }}/.zimbra_config_pass"
+        owner: root
+        group: root
+        remote_src: true
+
     - name: Installing packages
       yum:
         name: "{{ item }}"
