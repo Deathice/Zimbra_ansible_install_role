@@ -84,6 +84,28 @@
 
 - name: Manipulating files, packages and services
   block:
+    - name: Adding response file
+      #shell: echo "{{ item }}" >> ~/Documents/scripts/ansible/ITM_zimbra_conf/roles/zimbra_install/templates/installZimbra-keystrokes.j2
+      shell: echo "{{ item }}" >> roles/zimbra_install/templates/installZimbra-keystrokes.j2
+      delegate_to: localhost
+      with_items:
+        - '{{ license }}'
+        - '{{ repo }}'
+        - '{{ zldap }}'
+        - '{{ zlogger }}'
+        - '{{ zmta }}'
+        - '{{ zdnscache }}'
+        - '{{ zsnmp }}'
+        - '{{ zstore }}'
+        - '{{ zapache }}'
+        - '{{ zspell }}'
+        - '{{ zmemcached }}'
+        - '{{ zproxy }}'
+        - '{{ zchat }}'
+        - '{{ zdrive }}'
+        - '{{ zimapd }}'
+        - '{{ zmodified }}'
+
     - name: Setting admin password
       copy:
         content: "zimbra_pass: {{ pass_config }}"
