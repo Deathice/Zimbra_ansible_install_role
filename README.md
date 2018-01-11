@@ -24,4 +24,4 @@ Edit the variables into vars/main.yml file with:
 Author Information
 ------------------
 
-Kevyn Perez kperez@itm.gt
+Kevyn Perez kevynkl2@gmail.com
