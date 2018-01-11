@@ -2,6 +2,88 @@
 # tasks file for ITM_zimbra_install
 - name: Download Zimbra package
   block:
+    - name: license
+      pause:
+        prompt: "Do you agree with the terms of the software license agreement?"
+      register: license
+
+    - name: repo
+      pause:
+        prompt: "Use Zimbra's package repository"
+      register: repo
+
+    - name: zldap
+      pause:
+        prompt: "Install zimbra-ldap"
+      register: zldap
+
+    - name: zlogger
+      pause:
+        prompt: "Install zimbra-logger"
+      register: zlogger
+
+    - name: zmta
+      pause:
+        prompt: "Install zimbra-mta"
+      register: zmta
+
+    - name: zdnscache
+      pause:
+        prompt: "Install zimbra-dnscache"
+      register: zdnscache
+
+    - name: zsnmp
+      pause:
+        prompt: "Install zimbra-snmp"
+      register: zsnmp
+
+    - name: zstore
+      pause:
+        prompt: "Install zimbra-store"
+      register: zstore
+
+    - name: zapache
+      pause:
+        prompt: "Install zimbra-apache"
+      register: zapache
+
+    - name: zspell
+      pause:
+        prompt: "Install zimbra-spell"
+      register: zspell
+
+    - name: zmemcached
+      pause:
+        prompt: "Install zimbra-memcached"
+      register: zmemcached
+
+    - name: zproxy
+      pause:
+        prompt: "Install zimbra-proxy"
+      register: zproxy
+
+    - name: zchat
+      pause:
+        prompt: "Install zimbra-chat"
+      register: zchat
+
+    - name: zdrive
+      pause:
+        prompt: "Install zimbra-drive"
+      register: zdrive
+
+    - name: zimapd
+      pause:
+        prompt: "Install zimbra-imapd (BETA - for evaluation only)"
+      register: zimapd
+
+    - name: zmodified
+      pause:
+        prompt: "The system will be modified.  Continue?"
+      register: zmodified
+
+- name: Download Zimbra package
+  block:
     - name: Create untar directory
       file:
         path: /tmp/zcs
@@ -89,22 +171,22 @@
       shell: echo "{{ item }}" >> roles/zimbra_install/templates/installZimbra-keystrokes.j2
       delegate_to: localhost
       with_items:
-        - '{{ license }}'
-        - '{{ repo }}'
-        - '{{ zldap }}'
-        - '{{ zlogger }}'
-        - '{{ zmta }}'
-        - '{{ zdnscache }}'
-        - '{{ zsnmp }}'
-        - '{{ zstore }}'
-        - '{{ zapache }}'
-        - '{{ zspell }}'
-        - '{{ zmemcached }}'
-        - '{{ zproxy }}'
-        - '{{ zchat }}'
-        - '{{ zdrive }}'
-        - '{{ zimapd }}'
-        - '{{ zmodified }}'
+        - '{{ license.user_input }}'
+        - '{{ repo.user_input }}'
+        - '{{ zldap.user_input }}'
+        - '{{ zlogger.user_input }}'
+        - '{{ zmta.user_input }}'
+        - '{{ zdnscache.user_input }}'
+        - '{{ zsnmp.user_input }}'
+        - '{{ zstore.user_input }}'
+        - '{{ zapache.user_input }}'
+        - '{{ zspell.user_input }}'
+        - '{{ zmemcached.user_input }}'
+        - '{{ zproxy.user_input }}'
+        - '{{ zchat.user_input }}'
+        - '{{ zdrive.user_input }}'
+        - '{{ zimapd.user_input }}'
+        - '{{ zmodified.user_input }}'
 
     - name: Setting admin password
       copy:
