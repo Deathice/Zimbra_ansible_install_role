@@ -7,6 +7,7 @@ Requirements
 
 - Ansible v. 2.4+.
 - Edit the remote group into test/inventory
+- Redhat/CentOS 7.x (Minimal installation recomended)
 
 Role Variables
 --------------
