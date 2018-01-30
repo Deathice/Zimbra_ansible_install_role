@@ -207,6 +207,7 @@
         - 'dnsmasq'
         - 'libselinux-python'
         - 'firewalld'
+        - 'bind-utils'
 
     - name: System update
       yum:
