@@ -6,17 +6,16 @@ Requirements
 ------------
 
 - Ansible v. 2.4+.
-- Edit the remote group into test/inventory
+- Edit the remote group into your inventory host
 
 Role Variables
 --------------
 
 Edit the variables into vars/main.yml file with:
 
-- pass_config: 'Variable for the password that use the installation.'
 - srv_hostname: 'fqdn of your machine'
 - zim_url: URL for download the zimbra compress file.
-- zim_unarchive: Name of you compress file unarchive
+- zim_unarchive: This name will be generate automatically from zim_url variable
 - ip_client: Server IP
 - ip_dns: DNS Server IP
 
