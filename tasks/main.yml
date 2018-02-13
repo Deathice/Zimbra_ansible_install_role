@@ -166,28 +166,6 @@
 
 - name: Manipulating files, packages and services
   block:
-    - name: Adding response file
-      #shell: echo "{{ item }}" >> ~/Documents/scripts/ansible/ITM_zimbra_conf/roles/zimbra_install/templates/installZimbra-keystrokes.j2
-      shell: echo "{{ item }}" >> roles/zimbra_install/templates/installZimbra-keystrokes.j2
-      delegate_to: localhost
-      with_items:
-        - '{{ license.user_input }}'
-        - '{{ repo.user_input }}'
-        - '{{ zldap.user_input }}'
-        - '{{ zlogger.user_input }}'
-        - '{{ zmta.user_input }}'
-        - '{{ zdnscache.user_input }}'
-        - '{{ zsnmp.user_input }}'
-        - '{{ zstore.user_input }}'
-        - '{{ zapache.user_input }}'
-        - '{{ zspell.user_input }}'
-        - '{{ zmemcached.user_input }}'
-        - '{{ zproxy.user_input }}'
-        - '{{ zchat.user_input }}'
-        - '{{ zdrive.user_input }}'
-        - '{{ zimapd.user_input }}'
-        - '{{ zmodified.user_input }}'
-
     - name: Setting admin password
       copy:
         content: "zimbra_pass: {{ pass_config }}"
@@ -265,6 +243,18 @@
       template:
         src: 'installZimbra-keystrokes.j2'
         dest: /tmp/zcs/installZimbra-keystrokes
+      tags:
+        - check
+
+    - name: Download response file
+      fetch:
+        src: /tmp/zcs/installZimbra-keystrokes
+        dest: /tmp/installZimbra-keystrokes
+        flat: yes
+      tags:
+        - check
+      notify:
+        - display_message
 
     - name: Checking download status
       async_status: jid={{ dw_file.ansible_job_id }}
