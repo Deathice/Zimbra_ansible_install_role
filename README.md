@@ -7,7 +7,7 @@ Requirements
 
 - Ansible v. 2.4+.
 - Edit the remote group into your inventory host
-- redhat/Centos 7.x
+- RedHat/CentOS 7.x
 
 Role Variables
 --------------
