@@ -76,6 +76,8 @@
       pause:
         prompt: "Install zimbra-imapd (BETA - for evaluation only)"
       register: zimapd
+      when:
+        - zim_short_vs == "8.8"
 
     - name: zmodified
       pause:
