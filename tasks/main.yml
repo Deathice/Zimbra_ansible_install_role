@@ -1,5 +1,4 @@
 ---
-# tasks file for ITM_zimbra_install
 - name: Download Zimbra package
   tags:
     - response

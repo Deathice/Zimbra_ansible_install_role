@@ -1,5 +1,4 @@
 ---
-# handlers file for ITM_zimbra_install
 - name: restart dnsmasq
   service:
     name: dnsmasq

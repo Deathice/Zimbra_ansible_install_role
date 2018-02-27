@@ -1,5 +1,4 @@
 ---
-# vars file for ITM_zimbra_install
 srv_hostname: 'mail.corp.itm.gt'
 zim_url: https://files.zimbra.com/downloads/8.8.5_GA/zcs-8.8.5_GA_1894.RHEL7_64.20171026035615.tgz
 zim_unarchive: "{{ zim_url |regex_search('(zcs.*[0-9])')}}" 

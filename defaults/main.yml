@@ -1,5 +1,4 @@
 ---
-# defaults file for ITM_zimbra_install
 prompt: false
 install_license: y
 install_repo: y
