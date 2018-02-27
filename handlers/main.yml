@@ -4,7 +4,12 @@
   service:
     name: dnsmasq
     state: restarted
+
+- name: Restart firewalld service
+  service:
+    name: firewalld
+    state: restarted
     
 - name: display_message
   debug:
-    msg: "You must copy file ..... for backup "
+    msg: "You must copy the local file /tmp/installZimbra-keystrokes ..... for backup! "
