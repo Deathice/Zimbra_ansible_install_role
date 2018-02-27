@@ -1,88 +1,156 @@
 ---
 # tasks file for ITM_zimbra_install
 - name: Download Zimbra package
+  tags:
+    - response
   block:
     - name: license
       pause:
         prompt: "Do you agree with the terms of the software license agreement?"
-      register: license
+      register: install_package
+
+    - name: setting license var
+      set_fact:
+        install_license: "{{ install_package.user_input }}"
 
     - name: repo
       pause:
         prompt: "Use Zimbra's package repository"
-      register: repo
+      register: install_package
+
+    - name: setting repo var
+      set_fact:
+        install_repo: "{{ install_package.user_input }}"
 
     - name: zldap
       pause:
         prompt: "Install zimbra-ldap"
-      register: zldap
+      register: install_package
+
+    - name: setting zldap var
+      set_fact:
+        install_zldap: "{{ install_package.user_input }}"
 
     - name: zlogger
       pause:
         prompt: "Install zimbra-logger"
-      register: zlogger
+      register: install_package
+
+    - name: setting zlogger var
+      set_fact:
+        install_zlogger: "{{ install_package.user_input }}"
 
     - name: zmta
       pause:
         prompt: "Install zimbra-mta"
-      register: zmta
+      register: install_package
+
+    - name: setting zmta var
+      set_fact:
+        install_zmta: "{{ install_package.user_input }}"
 
     - name: zdnscache
       pause:
         prompt: "Install zimbra-dnscache"
-      register: zdnscache
+      register: install_package
+
+    - name: setting zdnscache var
+      set_fact:
+        install_zdnscache: "{{ install_package.user_input }}"
 
     - name: zsnmp
       pause:
         prompt: "Install zimbra-snmp"
-      register: zsnmp
+      register: install_package
+
+    - name: setting zsnmp var
+      set_fact:
+        install_zsnmp: "{{ install_package.user_input }}"
 
     - name: zstore
       pause:
         prompt: "Install zimbra-store"
-      register: zstore
+      register: install_package
+
+    - name: setting zstore var
+      set_fact:
+        install_zstore: "{{ install_package.user_input }}"
 
     - name: zapache
       pause:
         prompt: "Install zimbra-apache"
-      register: zapache
+      register: install_package
+
+    - name: setting zapache var
+      set_fact:
+        install_zapache: "{{ install_package.user_input }}"
 
     - name: zspell
       pause:
         prompt: "Install zimbra-spell"
-      register: zspell
+      register: install_package
+
+    - name: setting zspell var
+      set_fact:
+        install_zspell: "{{ install_package.user_input }}"
 
     - name: zmemcached
       pause:
         prompt: "Install zimbra-memcached"
-      register: zmemcached
+      register: install_package
+
+    - name: setting zmemcached var
+      set_fact:
+        install_zmemcached: "{{ install_package.user_input }}"
 
     - name: zproxy
       pause:
         prompt: "Install zimbra-proxy"
-      register: zproxy
+      register: install_package
+
+    - name: setting zproxy var
+      set_fact:
+        install_zproxy: "{{ install_package.user_input }}"
 
     - name: zchat
       pause:
         prompt: "Install zimbra-chat"
-      register: zchat
+      register: install_package
+
+    - name: setting zchat var
+      set_fact:
+        install_zchat: "{{ install_package.user_input }}"
 
     - name: zdrive
       pause:
         prompt: "Install zimbra-drive"
-      register: zdrive
+      register: install_package
+
+    - name: setting zdrive var
+      set_fact:
+        install_zdrive: "{{ install_package.user_input }}"
 
     - name: zimapd
       pause:
         prompt: "Install zimbra-imapd (BETA - for evaluation only)"
-      register: zimapd
+      register: install_package
       when:
         - zim_short_vs == "8.8"
+
+    - name: setting zimapd var
+      set_fact:
+        install_zimapd: "{{ install_package.user_input }}"
 
     - name: zmodified
       pause:
         prompt: "The system will be modified.  Continue?"
-      register: zmodified
+      register: install_package
+
+    - name: setting zmodified var
+      set_fact:
+        install_zmodified: "{{ install_package.user_input }}"
+  when:
+    - prompt
 
 - name: Download Zimbra package
   block:
@@ -316,3 +384,5 @@
         permanent: true
       with_items:
         - "{{ zim_ports }}"
+      notify:
+        - Restart firewalld service
