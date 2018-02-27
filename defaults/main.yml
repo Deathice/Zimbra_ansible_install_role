@@ -1,2 +1,19 @@
 ---
 # defaults file for ITM_zimbra_install
+prompt: false
+install_license: y
+install_repo: y
+install_zldap: y
+install_zlogger: y
+install_zmta: y
+install_zdnscache: n
+install_zsnmp: y
+install_zstore: y
+install_zapache: y
+install_zspell: y
+install_zmemcached: y
+install_zproxy: y
+install_zchat: y
+install_zdrive: y
+install_zimapd: n
+install_zmodified: y
