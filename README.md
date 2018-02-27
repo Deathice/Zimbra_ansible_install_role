@@ -1,6 +1,9 @@
 Zimbra_ansible_install_role
 =========
-Install zimbra 8.7 or 8.8 with ansible
+Install zimbra 8.7 or 8.8 with ansible. You will install with two forms:
+
+- Default
+- Using prompt variable with true value. (e.g. -e prompt=true)
 
 Requirements
 ------------
