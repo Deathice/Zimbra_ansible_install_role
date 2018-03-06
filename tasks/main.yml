@@ -171,6 +171,8 @@
       poll: 0
       register: dw_file
       when: zim_file_status.failed
+  when:
+    - install_zmodified == 'y' or install_zmodified == 'Y'
 
 - name: Generating variables
   block:
@@ -230,6 +232,8 @@
     - name: Current HOSTNAME
       debug:
         msg: "NEW Current: {{ ansible_fqdn }} {{ ansible_domain }} {{ ansible_hostname }}"
+  when:
+    - install_zmodified == 'y' or install_zmodified == 'Y'
 
 - name: Manipulating files, packages and services
   block:
@@ -339,6 +343,8 @@
         owner: root
         group: root
         mode: 644
+  when:
+    - install_zmodified == 'y' or install_zmodified == 'Y'
 
 - name: Installing Zimbra
   block:
@@ -367,6 +373,8 @@
   when: 
     - ansible_os_family == 'RedHat'
     - ansible_distribution_major_version == '7'
+    - install_zmodified == 'y' or install_zmodified == 'Y'
+
 
 - name: Enable ports
   block:
@@ -379,3 +387,5 @@
         - "{{ zim_ports }}"
       notify:
         - Restart firewalld service
+  when:
+    - install_zmodified == 'y' or install_zmodified == 'Y'
