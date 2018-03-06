@@ -157,7 +157,7 @@
         state: directory
 
     - name: Copy zimbra file
-      copy: 
+      copy:
         src: "{{ zim_unarchive }}.tgz"
         dest: /tmp/zcs
       register: zim_file_status
@@ -212,7 +212,7 @@
         msg: "Current: {{ ansible_fqdn }} {{ ansible_domain }} {{ ansible_hostname }}"
 
     - name: Changing FQDN
-      hostname: 
+      hostname:
         name: "{{ srv_hostname }}"
       when:
         - ansible_fqdn != srv_hostname
@@ -370,7 +370,7 @@
 
     - name: Change to zimbra user and execute zmcontrol restart
       shell: su - zimbra -c 'zmcontrol restart'
-  when: 
+  when:
     - ansible_os_family == 'RedHat'
     - ansible_distribution_major_version == '7'
     - install_zmodified == 'y' or install_zmodified == 'Y'
