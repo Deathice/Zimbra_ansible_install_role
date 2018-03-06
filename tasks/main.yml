@@ -1,7 +1,5 @@
 ---
 - name: Download Zimbra package
-  tags:
-    - response
   block:
     - name: license
       pause:
@@ -312,16 +310,12 @@
       template:
         src: 'installZimbra-keystrokes.j2'
         dest: /tmp/zcs/installZimbra-keystrokes
-      tags:
-        - check
 
     - name: Download response file
       fetch:
         src: /tmp/zcs/installZimbra-keystrokes
         dest: /tmp/installZimbra-keystrokes
         flat: yes
-      tags:
-        - check
       notify:
         - display_message
 
