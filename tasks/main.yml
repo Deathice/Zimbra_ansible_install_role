@@ -3,7 +3,7 @@
   block:
     - name: license
       pause:
-        prompt: "Do you agree with the terms of the software license agreement?"
+        prompt: "Do you agree with the terms of the software license agreement? [Y/n]"
       register: install_package
 
     - name: setting license var
@@ -12,7 +12,7 @@
 
     - name: repo
       pause:
-        prompt: "Use Zimbra's package repository"
+        prompt: "Use Zimbra's package repository [Y/n]"
       register: install_package
 
     - name: setting repo var
@@ -21,7 +21,7 @@
 
     - name: zldap
       pause:
-        prompt: "Install zimbra-ldap"
+        prompt: "Install zimbra-ldap [Y/n]"
       register: install_package
 
     - name: setting zldap var
@@ -30,7 +30,7 @@
 
     - name: zlogger
       pause:
-        prompt: "Install zimbra-logger"
+        prompt: "Install zimbra-logger [Y/n]"
       register: install_package
 
     - name: setting zlogger var
@@ -39,7 +39,7 @@
 
     - name: zmta
       pause:
-        prompt: "Install zimbra-mta"
+        prompt: "Install zimbra-mta [Y/n]"
       register: install_package
 
     - name: setting zmta var
@@ -48,7 +48,7 @@
 
     - name: zdnscache
       pause:
-        prompt: "Install zimbra-dnscache"
+        prompt: "Install zimbra-dnscache [y/N]"
       register: install_package
 
     - name: setting zdnscache var
@@ -57,7 +57,7 @@
 
     - name: zsnmp
       pause:
-        prompt: "Install zimbra-snmp"
+        prompt: "Install zimbra-snmp [Y/n]"
       register: install_package
 
     - name: setting zsnmp var
@@ -66,7 +66,7 @@
 
     - name: zstore
       pause:
-        prompt: "Install zimbra-store"
+        prompt: "Install zimbra-store [Y/n]"
       register: install_package
 
     - name: setting zstore var
@@ -75,7 +75,7 @@
 
     - name: zapache
       pause:
-        prompt: "Install zimbra-apache"
+        prompt: "Install zimbra-apache [Y/n]"
       register: install_package
 
     - name: setting zapache var
@@ -84,7 +84,7 @@
 
     - name: zspell
       pause:
-        prompt: "Install zimbra-spell"
+        prompt: "Install zimbra-spell [Y/n]"
       register: install_package
 
     - name: setting zspell var
@@ -93,7 +93,7 @@
 
     - name: zmemcached
       pause:
-        prompt: "Install zimbra-memcached"
+        prompt: "Install zimbra-memcached [Y/n]"
       register: install_package
 
     - name: setting zmemcached var
@@ -102,7 +102,7 @@
 
     - name: zproxy
       pause:
-        prompt: "Install zimbra-proxy"
+        prompt: "Install zimbra-proxy [Y/n]"
       register: install_package
 
     - name: setting zproxy var
@@ -111,7 +111,7 @@
 
     - name: zchat
       pause:
-        prompt: "Install zimbra-chat"
+        prompt: "Install zimbra-chat [Y/n]"
       register: install_package
 
     - name: setting zchat var
@@ -120,7 +120,7 @@
 
     - name: zdrive
       pause:
-        prompt: "Install zimbra-drive"
+        prompt: "Install zimbra-drive [Y/n]"
       register: install_package
 
     - name: setting zdrive var
@@ -129,7 +129,7 @@
 
     - name: zimapd
       pause:
-        prompt: "Install zimbra-imapd (BETA - for evaluation only)"
+        prompt: "Install zimbra-imapd (BETA - for evaluation only) [y/N]"
       register: install_package
       when:
         - zim_short_vs == "8.8"
@@ -140,7 +140,7 @@
 
     - name: zmodified
       pause:
-        prompt: "The system will be modified.  Continue?"
+        prompt: "The system will be modified.  Continue? [Y/n]"
       register: install_package
 
     - name: setting zmodified var
@@ -374,7 +374,6 @@
     - ansible_os_family == 'RedHat'
     - ansible_distribution_major_version == '7'
     - install_zmodified == 'y' or install_zmodified == 'Y'
-
 
 - name: Enable ports
   block:
