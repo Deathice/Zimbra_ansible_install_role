@@ -1,5 +1,5 @@
 ---
-- name: Download Zimbra package
+- name: Agree software license
   block:
     - name: license
       pause:
@@ -9,7 +9,11 @@
     - name: setting license var
       set_fact:
         install_license: "{{ install_package.user_input }}"
-
+  when:
+    - prompt
+    
+- name: Download Zimbra package
+  block:
     - name: repo
       pause:
         prompt: "Use Zimbra's package repository [Y/n]"
@@ -137,6 +141,8 @@
     - name: setting zimapd var
       set_fact:
         install_zimapd: "{{ install_package.user_input }}"
+      when:
+        - zim_short_vs == "8.8"
 
     - name: zmodified
       pause:
@@ -148,6 +154,7 @@
         install_zmodified: "{{ install_package.user_input }}"
   when:
     - prompt
+    - install_license == 'Y' or install_license == 'y'
 
 - name: Download Zimbra package
   block:
@@ -173,6 +180,7 @@
       when: zim_file_status.failed
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
+    - install_license == 'Y' or install_license == 'y'
 
 - name: Generating variables
   block:
@@ -234,6 +242,7 @@
         msg: "NEW Current: {{ ansible_fqdn }} {{ ansible_domain }} {{ ansible_hostname }}"
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
+    - install_license == 'Y' or install_license == 'y'
 
 - name: Manipulating files, packages and services
   block:
@@ -345,6 +354,7 @@
         mode: 644
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
+    - install_license == 'Y' or install_license == 'y'
 
 - name: Installing Zimbra
   block:
@@ -374,6 +384,7 @@
     - ansible_os_family == 'RedHat'
     - ansible_distribution_major_version == '7'
     - install_zmodified == 'y' or install_zmodified == 'Y'
+    - install_license == 'Y' or install_license == 'y'
 
 - name: Enable ports
   block:
@@ -388,3 +399,4 @@
         - Restart firewalld service
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
+    - install_license == 'Y' or install_license == 'y'
