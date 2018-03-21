@@ -405,8 +405,8 @@
   block:
     - name: Task Complete
       telegram:
-        token: '580651028:AAGe0V06JQviOUYyD4E9RDDC81pXZh3YQbc'
-        chat_id: '-268632707'
+        token: '{{ token_id }}'
+        chat_id: '{{ chatid }}'
         msg: "{{ item }}"
       with_items:
         - Your Zimbra installation has been completed successfully
