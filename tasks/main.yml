@@ -400,3 +400,16 @@
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
     - install_license == 'Y' or install_license == 'y'
+
+- name: Notifiying to user in charge
+  block:
+    - name: Task Complete
+      telegram:
+        token: '580651028:AAGe0V06JQviOUYyD4E9RDDC81pXZh3YQbc'
+        chat_id: '-268632707'
+        msg: "{{ item }}"
+      with_items:
+        - Your Zimbra installation has been completed successfully
+        - Your IP Zimbra Server is {{ ansible_default_ipv4.address }}
+      when:
+        - tg
