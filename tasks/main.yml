@@ -11,7 +11,7 @@
         install_license: "{{ install_package.user_input }}"
   when:
     - prompt
-    
+
 - name: Download Zimbra package
   block:
     - name: repo
