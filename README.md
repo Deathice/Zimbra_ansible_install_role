@@ -24,6 +24,17 @@ Edit the variables into vars/main.yml file with:
 - ip_client: Server IP
 - ip_dns: DNS Server IP
 
+Notifications
+------------
+
+If you want a notification on Telegram when the ansible process is finished, do this:
+
+Change this variables values from your vars/main.yml file
+
+- token_id: id token from your telegram chat group
+- chatid: chat id from your telegram chat group
+
+Then, execute the playbook adding the tg variable with true value. (e.g. -e tg=true)
 
 Author Information
 ------------------
