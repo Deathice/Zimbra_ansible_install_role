@@ -1,8 +1,7 @@
 ---
 srv_hostname: ''
-zim_url: https://files.zimbra.com/downloads/8.8.5_GA/zcs-8.8.5_GA_1894.RHEL7_64.20171026035615.tgz
+zim_url: 
 zim_unarchive: "{{ zim_url |regex_search('(zcs.*[0-9])')}}" 
-zim_short_vs: "{{ zim_url |urlsplit('path') |regex_search('(8.8)') }}"
 ip_client: 
 ip_dns: 
 token_id: ''

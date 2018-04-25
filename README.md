@@ -1,6 +1,6 @@
 Zimbra_ansible_install_role
 =========
-Install zimbra 8.7 or 8.8 with ansible. You will install with two forms:
+Install zimbra 8.8.x with ansible. You will install with two forms:
 
 - Default
 - Using prompt variable with true value. (e.g. -e prompt=true)
@@ -25,7 +25,7 @@ Edit the variables into vars/main.yml file with:
 - ip_dns: DNS Server IP
 
 Notifications
-------------
+-------------
 
 If you want a notification on Telegram when the ansible process is finished, do this:
 
@@ -35,6 +35,10 @@ Change this variables values from your vars/main.yml file
 - chatid: chat id from your telegram chat group
 
 Then, execute the playbook adding the tg variable with true value. (e.g. -e tg=true)
+
+## Note
+This role not support backward compatibility
+
 
 Author Information
 ------------------

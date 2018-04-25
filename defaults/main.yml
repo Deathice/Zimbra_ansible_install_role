@@ -14,6 +14,6 @@ install_zspell: y
 install_zmemcached: y
 install_zproxy: y
 install_zchat: y
-install_zdrive: y
+install_zdrive: n
 install_zimapd: n
 install_zmodified: y
