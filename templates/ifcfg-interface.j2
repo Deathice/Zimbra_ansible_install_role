@@ -12,5 +12,5 @@ PEERROUTES=yes
 IPV4_FAILURE_FATAL=no
 IPV6INIT=no
 NAME="{{ ansible_default_ipv4.interface }}"
-DNS1: 127.0.0.1
-DNS2: {{ ip_dns }}
+DNS1=127.0.0.1
+DNS2={{ ip_dns }}
