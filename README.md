@@ -39,7 +39,7 @@ Then, execute the playbook adding the tg variable with true value. (e.g. -e tg=t
 - If you don know how to get token_id and chat id, see https://stackoverflow.com/questions/32683992/find-out-my-own-user-id-for-sending-a-message-with-telegram-api
 
 ## Note
-This role not support backward compatibility
+This role not support backward compatibility.
 
 
 Author Information
