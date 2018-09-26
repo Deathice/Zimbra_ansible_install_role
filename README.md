@@ -35,8 +35,8 @@ Change this variables values from your vars/main.yml file
 
 Then, execute the playbook adding the tg variable with true value. (e.g. -e tg=true)
 
-1.- If you dont know how to create a telegram bot, see https://core.telegram.org/bots
-2.- If you don know how to get token_id and chat id, see https://stackoverflow.com/questions/32683992/find-out-my-own-user-id-for-sending-a-message-with-telegram-api
+- If you dont know how to create a telegram bot, see https://core.telegram.org/bots
+- If you don know how to get token_id and chat id, see https://stackoverflow.com/questions/32683992/find-out-my-own-user-id-for-sending-a-message-with-telegram-api
 
 ## Note
 This role not support backward compatibility
