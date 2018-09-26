@@ -1,8 +1,8 @@
 ---
-srv_hostname: 'ZimNewRelease.internal.local'
-zim_url: https://files.zimbra.com/downloads/8.8.9_GA/zcs-8.8.9_GA_2055.RHEL7_64.20180703080917.tgz
+srv_hostname: 'newzim.zimbra.local'
+zim_url: https://files.zimbra.com/downloads/8.8.9_GA/zcs-8.8.9_GA_3019.RHEL7_64.20180809160254.tgz
 zim_unarchive: "{{ zim_url |regex_search('(zcs.*[0-9])')}}" 
-ip_client: 192.168.13.249
+ip_client: 192.168.13.215
 ip_dns: 192.168.13.253
 token_id: ''
 chatid: ''
