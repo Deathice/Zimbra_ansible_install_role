@@ -252,16 +252,8 @@
 
     - name: Installing packages
       yum:
-        name: "{{ item }}"
+        name: "{{ zim_packages }}"
         state: latest
-      with_items:
-        - 'perl'
-        - 'net-tools'
-        - 'nmap-ncat'
-        - 'dnsmasq'
-        - 'libselinux-python'
-        - 'firewalld'
-        - 'bind-utils'
 
     - name: System update
       yum:
