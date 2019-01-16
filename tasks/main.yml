@@ -367,7 +367,9 @@
       shell: /opt/zimbra/libexec/zmsetup.pl -c /tmp/zcs/installZimbraScript
 
     - name: Change to zimbra user and execute zmcontrol restart
-      shell: su - zimbra -c 'zmcontrol restart'
+      shell: 'zmcontrol restart'
+      become: true
+      become_user: zimbra
   when:
     - ansible_os_family == 'RedHat'
     - ansible_distribution_major_version == '7'
