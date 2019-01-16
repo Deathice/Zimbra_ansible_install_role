@@ -22,3 +22,11 @@ zim_ports:
   - '9071/tcp'
   - '7071/tcp'
   - '8443/tcp'
+zim_packages:
+  - 'perl'
+  - 'net-tools'
+  - 'nmap-ncat'
+  - 'dnsmasq'
+  - 'libselinux-python'
+  - 'firewalld'
+  - 'bind-utils'
