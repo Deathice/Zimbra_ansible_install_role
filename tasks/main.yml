@@ -113,15 +113,6 @@
       set_fact:
         install_zproxy: "{{ install_package.user_input }}"
 
-    - name: zchat
-      pause:
-        prompt: "Install zimbra-chat [Y/n]"
-      register: install_package
-
-    - name: setting zchat var
-      set_fact:
-        install_zchat: "{{ install_package.user_input }}"
-
     - name: zdrive
       pause:
         prompt: "Install zimbra-drive [Y/n]"
@@ -139,6 +130,15 @@
     - name: setting zimapd var
       set_fact:
         install_zimapd: "{{ install_package.user_input }}"
+
+    - name: zchat
+      pause:
+        prompt: "Install zimbra-chat [Y/n]"
+      register: install_package
+
+    - name: setting zchat var
+      set_fact:
+        install_zchat: "{{ install_package.user_input }}"
 
     - name: zmodified
       pause:
