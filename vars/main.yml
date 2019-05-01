@@ -31,3 +31,4 @@ zim_packages:
   - 'firewalld'
   - 'bind-utils'
 zmconfigd_file: /opt/zimbra/log/zmconfigd.pid
+time_zone: America/Guatemala
