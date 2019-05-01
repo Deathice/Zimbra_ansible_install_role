@@ -272,6 +272,10 @@
 
 - name: Manipulating files, packages and services
   block:
+    - name: Setting timezone for server
+      timezone:
+        name: "{{ timezone }}"
+
     - name: Setting admin password
       copy:
         content: "zimbra_pass: {{ pass_config }}"
