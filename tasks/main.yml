@@ -11,6 +11,8 @@
         install_license: "{{ install_package.user_input }}"
   when:
     - prompt
+  tags:
+    - prepare
 
 - name: Download Zimbra package
   block:
@@ -113,6 +115,15 @@
       set_fact:
         install_zproxy: "{{ install_package.user_input }}"
 
+    - name: zchat
+      pause:
+        prompt: "Install zimbra-chat [Y/n]"
+      register: install_package
+
+    - name: setting zchat var
+      set_fact:
+        install_zchat: "{{ install_package.user_input }}"
+
     - name: zdrive
       pause:
         prompt: "Install zimbra-drive [Y/n]"
@@ -131,15 +142,6 @@
       set_fact:
         install_zimapd: "{{ install_package.user_input }}"
 
-    - name: zchat
-      pause:
-        prompt: "Install zimbra-chat [Y/n]"
-      register: install_package
-
-    - name: setting zchat var
-      set_fact:
-        install_zchat: "{{ install_package.user_input }}"
-
     - name: zmodified
       pause:
         prompt: "The system will be modified.  Continue? [Y/n]"
@@ -151,6 +153,8 @@
   when:
     - prompt
     - install_license == 'Y' or install_license == 'y'
+  tags:
+    - prepare
 
 - name: Download Zimbra package
   block:
@@ -177,30 +181,42 @@
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
     - install_license == 'Y' or install_license == 'y'
+  tags: 
+    - prepare
 
 - name: Generating variables
   block:
     - name: randomspam
       set_fact:
         randomham: "{{ lookup('password', '/dev/null chars=ascii_letters,digits length=10') }}"
+      tags:
+        - prepare
 
     - name: waiting a few seconds
       wait_for:
         timeout: 1
       delegate_to: localhost
+      tags:
+        - prepare
 
     - name: randomspam
       set_fact:
         randomspam: "{{ lookup('password', '/dev/null chars=ascii_letters,digits length=10') }}"
+      tags:
+        - prepare
 
     - name: waiting a few seconds
       wait_for:
         timeout: 1
       delegate_to: localhost
+      tags:
+        - prepare
 
     - name: randomvirus
       set_fact:
         randomvirus: "{{ lookup('password', '/dev/null chars=ascii_letters,digits length=10') }}"
+      tags:
+        - prepare
 
     - name: waiting a few seconds
       wait_for:
@@ -210,32 +226,46 @@
     - name: Generating password
       set_fact:
         pass_config: "{{ lookup('password', '/dev/null chars=ascii_letters,digits length=10') }}"
+      tags:
+        - prepare
 
     - name: Current HOSTNAME
       debug:
         msg: "Current: {{ ansible_fqdn }} {{ ansible_domain }} {{ ansible_hostname }}"
+      tags: 
+        - prepare
 
     - name: Changing FQDN
       hostname:
         name: "{{ srv_hostname }}"
       when:
         - ansible_fqdn != srv_hostname
+      tags: 
+        - prepare
 
     - name: Set Fact for ansible_fqdn
       set_fact:
         ansible_fqdn: "{{ srv_hostname }}"
+      tags: 
+        - prepare
 
     - name: Set Fact for ansible_domain
       set_fact:
         ansible_domain: "{{ srv_hostname.split('.')[1:] | join('.') }}"
+      tags: 
+        - prepare
 
     - name: Set Fact for ansible_hostname
       set_fact:
         ansible_hostname: "{{ srv_hostname.split('.')[0] }}"
+      tags: 
+        - prepare
 
     - name: Current HOSTNAME
       debug:
         msg: "NEW Current: {{ ansible_fqdn }} {{ ansible_domain }} {{ ansible_hostname }}"
+      tags: 
+        - prepare
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
     - install_license == 'Y' or install_license == 'y'
@@ -254,17 +284,23 @@
       yum:
         name: "{{ zim_packages }}"
         state: latest
+      tags: 
+        - prepare
 
     - name: System update
       yum:
         name: '*'
         state: latest
+      tags: 
+        - prepare
 
     - name: Moving dnsmasq to .original
       copy:
         remote_src: true
         src: /etc/dnsmasq.conf
         dest: /etc/dnsmasq.conf.original
+      tags: 
+        - prepare
 
     - name: Configure dnsmasq
       template:
@@ -273,6 +309,8 @@
         owner: root
         group: root
         mode: 644
+      tags: 
+        - prepare
 
     - name: Copy ifcfg-interface template
       template:
@@ -281,6 +319,8 @@
         owner: root
         group: root
         mode: 0644
+      tags: 
+        - prepare
 
     - name: Copy resolv.conf template
       template:
@@ -289,28 +329,38 @@
         owner: root
         group: root
         mode: 0644
+      tags: 
+        - prepare
 
     - name: Start and enable dnsmasq service
       service:
         name: dnsmasq
         state: restarted
         enabled: true
+      tags: 
+        - prepare
 
     - name: Start and enable firewalld service
       service:
         name: firewalld
         state: restarted
         enabled: true
+      tags: 
+        - prepare
 
     - name: Copy config script zimbra file
       template:
         src: 'installZimbraScript.j2'
         dest: /tmp/zcs/installZimbraScript
+      tags:
+        - prepare
 
     - name: Copy config script keystrokes file
       template:
         src: 'installZimbra-keystrokes.j2'
         dest: /tmp/zcs/installZimbra-keystrokes
+      tags:
+        - prepare
 
     - name: Download response file
       fetch:
@@ -326,12 +376,16 @@
       until: dw_status.finished
       retries: 980
       when: zim_file_status.failed
+      tags: 
+        - prepare
 
     - name: Disable and stop postfix
       service:
         name: postfix
         state: stopped
         enabled: False
+      tags: 
+        - prepare
 
     - name: Configure dnsmasq
       template:
@@ -340,6 +394,8 @@
         owner: root
         group: root
         mode: 644
+      tags: 
+        - prepare
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
     - install_license == 'Y' or install_license == 'y'
@@ -351,12 +407,16 @@
         path: /etc/hosts
         regexp: '^{{ ansible_default_ipv4.address }}.*'
         line: '{{ ansible_default_ipv4.address }} {{ ansible_fqdn }} {{ ansible_hostname }}'
+      tags: 
+        - prepare
 
     - name: unarchive zimbra file
       unarchive:
         src: /tmp/zcs/{{ zim_unarchive }}.tgz
         dest: /tmp/zcs
         remote_src: true
+      tags: 
+        - prepare
 
     - name: Installing Zimbra Collaboration, just the Software
       shell: ./install.sh -s < /tmp/zcs/installZimbra-keystrokes
@@ -368,6 +428,9 @@
 
     - name: Change to zimbra user and execute zmcontrol restart
       shell: su - zimbra -c 'zmcontrol restart'
+      register: zmcontrol_status
+      ignore_errors: true
+
     - name: Delete zmconfigdctl.pid file
       file:
         path: "{{ zmconfigd_file }}"
@@ -377,6 +440,7 @@
     - name: Restart zimbra services
       shell: su - zimbra -c 'zmcontrol restart'
       when: zmcontrol_status.failed
+
   when:
     - ansible_os_family == 'RedHat'
     - ansible_distribution_major_version == '7'
@@ -394,6 +458,8 @@
         - "{{ zim_ports }}"
       notify:
         - Restart firewalld service
+      tags: 
+        - prepare
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
     - install_license == 'Y' or install_license == 'y'
