@@ -30,3 +30,4 @@ zim_packages:
   - 'libselinux-python'
   - 'firewalld'
   - 'bind-utils'
+zmconfigd_file: /opt/zimbra/log/zmconfigd.pid
