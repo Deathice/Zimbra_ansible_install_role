@@ -1,7 +1,7 @@
 ---
 srv_hostname: 'newzim.zimbra.local'
 zim_url: https://files.zimbra.com/downloads/8.8.12_GA/zcs-8.8.12_GA_3794.RHEL7_64.20190329045002.tgz
-zim_unarchive: "{{ zim_url |regex_search('(zcs.*[0-9])')}}" 
+zim_unarchive: "{{ zim_url |regex_search('(zcs.*[0-9])')}}"
 ip_client: 192.168.13.215
 ip_dns: 192.168.13.253
 token_id: ''

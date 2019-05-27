@@ -181,7 +181,7 @@
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
     - install_license == 'Y' or install_license == 'y'
-  tags: 
+  tags:
     - prepare
 
 - name: Generating variables
@@ -232,7 +232,7 @@
     - name: Current HOSTNAME
       debug:
         msg: "Current: {{ ansible_fqdn }} {{ ansible_domain }} {{ ansible_hostname }}"
-      tags: 
+      tags:
         - prepare
 
     - name: Changing FQDN
@@ -240,31 +240,31 @@
         name: "{{ srv_hostname }}"
       when:
         - ansible_fqdn != srv_hostname
-      tags: 
+      tags:
         - prepare
 
     - name: Set Fact for ansible_fqdn
       set_fact:
         ansible_fqdn: "{{ srv_hostname }}"
-      tags: 
+      tags:
         - prepare
 
     - name: Set Fact for ansible_domain
       set_fact:
         ansible_domain: "{{ srv_hostname.split('.')[1:] | join('.') }}"
-      tags: 
+      tags:
         - prepare
 
     - name: Set Fact for ansible_hostname
       set_fact:
         ansible_hostname: "{{ srv_hostname.split('.')[0] }}"
-      tags: 
+      tags:
         - prepare
 
     - name: Current HOSTNAME
       debug:
         msg: "NEW Current: {{ ansible_fqdn }} {{ ansible_domain }} {{ ansible_hostname }}"
-      tags: 
+      tags:
         - prepare
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
@@ -287,15 +287,15 @@
     - name: Installing packages
       yum:
         name: "{{ zim_packages }}"
-        state: latest
-      tags: 
+        state: present
+      tags:
         - prepare
 
     - name: System update
       yum:
         name: '*'
-        state: latest
-      tags: 
+        state: present
+      tags:
         - prepare
 
     - name: Moving dnsmasq to .original
@@ -303,7 +303,7 @@
         remote_src: true
         src: /etc/dnsmasq.conf
         dest: /etc/dnsmasq.conf.original
-      tags: 
+      tags:
         - prepare
 
     - name: Configure dnsmasq
@@ -312,8 +312,8 @@
         dest: /etc/dnsmasq.conf
         owner: root
         group: root
-        mode: 644
-      tags: 
+        mode: 0644
+      tags:
         - prepare
 
     - name: Copy ifcfg-interface template
@@ -323,7 +323,7 @@
         owner: root
         group: root
         mode: 0644
-      tags: 
+      tags:
         - prepare
 
     - name: Copy resolv.conf template
@@ -333,7 +333,7 @@
         owner: root
         group: root
         mode: 0644
-      tags: 
+      tags:
         - prepare
 
     - name: Start and enable dnsmasq service
@@ -341,7 +341,7 @@
         name: dnsmasq
         state: restarted
         enabled: true
-      tags: 
+      tags:
         - prepare
 
     - name: Start and enable firewalld service
@@ -349,7 +349,7 @@
         name: firewalld
         state: restarted
         enabled: true
-      tags: 
+      tags:
         - prepare
 
     - name: Copy config script zimbra file
@@ -380,7 +380,7 @@
       until: dw_status.finished
       retries: 980
       when: zim_file_status.failed
-      tags: 
+      tags:
         - prepare
 
     - name: Disable and stop postfix
@@ -388,7 +388,7 @@
         name: postfix
         state: stopped
         enabled: False
-      tags: 
+      tags:
         - prepare
 
     - name: Configure dnsmasq
@@ -397,8 +397,8 @@
         dest: /etc/dnsmasq.conf
         owner: root
         group: root
-        mode: 644
-      tags: 
+        mode: 0644
+      tags:
         - prepare
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
@@ -411,7 +411,7 @@
         path: /etc/hosts
         regexp: '^{{ ansible_default_ipv4.address }}.*'
         line: '{{ ansible_default_ipv4.address }} {{ ansible_fqdn }} {{ ansible_hostname }}'
-      tags: 
+      tags:
         - prepare
 
     - name: unarchive zimbra file
@@ -419,19 +419,19 @@
         src: /tmp/zcs/{{ zim_unarchive }}.tgz
         dest: /tmp/zcs
         remote_src: true
-      tags: 
+      tags:
         - prepare
 
     - name: Installing Zimbra Collaboration, just the Software
-      shell: ./install.sh -s < /tmp/zcs/installZimbra-keystrokes
+      command: ./install.sh -s < /tmp/zcs/installZimbra-keystrokes
       args:
         chdir: /tmp/zcs/{{ zim_unarchive }}
 
     - name: Installing Zimbra Collaboration, injecting the configuration
-      shell: /opt/zimbra/libexec/zmsetup.pl -c /tmp/zcs/installZimbraScript
+      command: /opt/zimbra/libexec/zmsetup.pl -c /tmp/zcs/installZimbraScript
 
     - name: Change to zimbra user and execute zmcontrol restart
-      shell: su - zimbra -c 'zmcontrol restart'
+      command: su - zimbra -c 'zmcontrol restart'
       register: zmcontrol_status
       ignore_errors: true
 
@@ -442,7 +442,7 @@
       when: zmcontrol_status.failed
 
     - name: Restart zimbra services
-      shell: su - zimbra -c 'zmcontrol restart'
+      command: su - zimbra -c 'zmcontrol restart'
       when: zmcontrol_status.failed
 
   when:
@@ -462,7 +462,7 @@
         - "{{ zim_ports }}"
       notify:
         - Restart firewalld service
-      tags: 
+      tags:
         - prepare
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
