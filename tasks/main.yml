@@ -163,12 +163,16 @@
         path: /tmp/zcs
         state: directory
 
+    - name: Validate if zimbra file exist
+      stat:
+        path: "{{ zim_unarchive }}.tgz"
+      register: zimbra_file
+
     - name: Copy zimbra file
       copy:
         src: "{{ zim_unarchive }}.tgz"
         dest: /tmp/zcs
-      register: zim_file_status
-      ignore_errors: true
+      when: zimbra_file.stat.exists
 
     - name: Downloading zimbra file in background
       get_url:
@@ -177,7 +181,7 @@
       async: 3600
       poll: 0
       register: dw_file
-      when: zim_file_status.failed
+      when: not zimbra_file.stat.exists
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
     - install_license == 'Y' or install_license == 'y'
@@ -379,7 +383,7 @@
       register: dw_status
       until: dw_status.finished
       retries: 980
-      when: zim_file_status.failed
+      when: not zimbra_file.stat.exists
       tags:
         - prepare
 
