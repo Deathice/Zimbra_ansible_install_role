@@ -11,4 +11,4 @@
 
 - name: display_message
   debug:
-    msg: "You must copy the local file /tmp/installZimbra-keystrokes ..... for backup! "
+    msg: "You must copy the local file /tmp/installZimbra-keystrokes ..... for backup!"
