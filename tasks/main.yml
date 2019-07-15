@@ -427,15 +427,15 @@
         - prepare
 
     - name: Installing Zimbra Collaboration, just the Software
-      command: ./install.sh -s < /tmp/zcs/installZimbra-keystrokes
+      shell: ./install.sh -s < /tmp/zcs/installZimbra-keystrokes
       args:
         chdir: /tmp/zcs/{{ zim_unarchive }}
 
     - name: Installing Zimbra Collaboration, injecting the configuration
-      command: /opt/zimbra/libexec/zmsetup.pl -c /tmp/zcs/installZimbraScript
+      shell: /opt/zimbra/libexec/zmsetup.pl -c /tmp/zcs/installZimbraScript
 
     - name: Change to zimbra user and execute zmcontrol restart
-      command: su - zimbra -c 'zmcontrol restart'
+      shell: su - zimbra -c 'zmcontrol restart'
       register: zmcontrol_status
       ignore_errors: true
 
@@ -446,7 +446,7 @@
       when: zmcontrol_status.failed
 
     - name: Restart zimbra services
-      command: su - zimbra -c 'zmcontrol restart'
+      shell: su - zimbra -c 'zmcontrol restart'
       when: zmcontrol_status.failed
 
   when:
