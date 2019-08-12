@@ -1,19 +1,8 @@
 ---
-tg: false
-prompt: false
-install_license: y
-install_repo: y
-install_zldap: y
-install_zlogger: y
-install_zmta: y
-install_zdnscache: n
-install_zsnmp: y
-install_zstore: y
-install_zapache: y
-install_zspell: y
-install_zmemcached: y
-install_zproxy: y
-install_zchat: y
-install_zdrive: n
-install_zimapd: n
-install_zmodified: y
+srv_hostname: 'newzim.zimbra.local'
+zim_url: https://files.zimbra.com/downloads/8.8.12_GA/zcs-8.8.12_GA_3794.RHEL7_64.20190329045002.tgz
+ip_client: 192.168.13.215
+ip_dns: 192.168.13.253
+token_id: ''
+chatid: ''
+timezone: America/Guatemala
