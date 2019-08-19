@@ -196,6 +196,10 @@
         path: "/tmp/zcs/{{ zim_unarchive }}.tgz"
       register: zimbra_file
 
+    - name: Setting dw_file var
+      set_fact:
+        dw_file: ""
+
     - name: Downloading zimbra file in background
       get_url:
         url: "{{ zim_url |mandatory }}"
@@ -423,7 +427,7 @@
       until: dw_status.finished
       retries: 980
       # when: not zimbra_file.stat.exists and copy_zim_file.skipped
-      when: not dw_status.skipped
+      when: dw_status != ""
       tags:
         - prepare
 
