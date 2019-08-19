@@ -163,16 +163,33 @@
         path: /tmp/zcs
         state: directory
 
-    - name: Validate if zimbra file exist
+    - name: Validate if zimbra file exist into remote server
       stat:
-        path: "{{ zim_unarchive }}.tgz"
+        path: "/tmp/zcs/{{ zim_unarchive }}.tgz"
       register: zimbra_file
+
+    - name: Validate if zimbra file exist in ansible controller
+      find:
+        paths: "{{ playbook_dir }}"
+        patterns: '*.tgz'
+        recurse: true
+      register: zimbra_controller_file
+      delegate_to: localhost
+      when: not zimbra_file.stat.exists
 
     - name: Copy zimbra file
       copy:
         src: "{{ zim_unarchive }}.tgz"
         dest: /tmp/zcs
-      when: zimbra_file.stat.exists
+      register: copy_zim_file
+      when: not zimbra_file.stat.exists and item.path
+      loop:
+        "{{ zimbra_controller_file.files }}"
+
+    - name: Validate if zimbra file already exist
+      stat:
+        path: "/tmp/zcs/{{ zim_unarchive }}.tgz"
+      register: zimbra_file
 
     - name: Downloading zimbra file in background
       get_url:
@@ -187,6 +204,7 @@
     - install_license == 'Y' or install_license == 'y'
   tags:
     - prepare
+    - download
 
 - name: Generating variables
   block:
@@ -383,7 +401,8 @@
       register: dw_status
       until: dw_status.finished
       retries: 980
-      when: not zimbra_file.stat.exists
+      # when: not zimbra_file.stat.exists and copy_zim_file.skipped
+      when: not dw_status.skipped
       tags:
         - prepare
 
