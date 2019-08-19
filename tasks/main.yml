@@ -209,6 +209,15 @@
       shell: /usr/bin/md5sum -c /tmp/zcs/{{ zim_unarchive }}.tgz.md5
       args:
         chdir: /tmp/zcs
+      register: checksum_file
+
+    - name: Your zimbra tgz file doesn't match with md5 file
+      debug:
+        msg: "Please check your zimbra URL and try again"
+      when: "OK" in checksum_file.stdout
+
+    - meta: end_play
+      when: "OK" in checksum_file.stdout
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
     - install_license == 'Y' or install_license == 'y'
