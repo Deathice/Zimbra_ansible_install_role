@@ -214,10 +214,10 @@
     - name: Your zimbra tgz file doesn't match with md5 file
       debug:
         msg: "Please check your zimbra URL and try again"
-      when: "OK" in checksum_file.stdout
+      when: '"OK" in checksum_file.stdout'
 
     - meta: end_play
-      when: "OK" in checksum_file.stdout
+      when: '"OK" in checksum_file.stdout'
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
     - install_license == 'Y' or install_license == 'y'
