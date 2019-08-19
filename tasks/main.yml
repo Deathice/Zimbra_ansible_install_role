@@ -163,6 +163,11 @@
         path: /tmp/zcs
         state: directory
 
+    - name: Getting checksum zimbra file
+      get_url:
+        url: "{{ zim_url }}.md5"
+        dest: /tmp/zcs
+
     - name: Validate if zimbra file exist into remote server
       stat:
         path: "/tmp/zcs/{{ zim_unarchive }}.tgz"
@@ -199,6 +204,11 @@
       poll: 0
       register: dw_file
       when: not zimbra_file.stat.exists
+
+    - name: Validating Checksum
+      shell: /usr/bin/md5sum -c /tmp/zcs/{{ zim_unarchive }}.tgz.md5
+      args:
+        chdir: /tmp/zcs
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
     - install_license == 'Y' or install_license == 'y'
