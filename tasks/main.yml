@@ -173,7 +173,7 @@
         path: "/tmp/zcs/{{ zim_unarchive }}.tgz"
       register: zimbra_file
 
-    - name: Validate if zimbra file exist in ansible controller
+    - name: Validate if zimbra file exist into ansible controller
       find:
         paths: "{{ playbook_dir }}"
         patterns: '*.tgz'
@@ -210,16 +210,15 @@
       args:
         chdir: /tmp/zcs
       register: checksum_file
+      when: zimbra_file.changed or zimbra_controller_file.changed
 
-    - name: Your zimbra tgz file doesn't match with md5 file
+    - name: Your zimbra tgz file doesnt match with md5 file
       debug:
-        msg: > 
-          "Please check your zimbra package downloaded and try again
-           The tgz file and md5sum file doesn't match"
-      when: '"OK" not in checksum_file.stdout'
+        msg: "Please check your zimbra package downloaded and try again. The tgz file and md5sum file doesn't match"
+      when: not checksum_file.skipped
 
     - meta: end_play
-      when: '"OK" not in checksum_file.stdout'
+      when: not checksum_file.skipped
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
     - install_license == 'Y' or install_license == 'y'
@@ -422,10 +421,16 @@
       register: dw_status
       until: dw_status.finished
       retries: 980
-      # when: not zimbra_file.stat.exists and copy_zim_file.skipped
-      when: dw_status is defined
+      when: dw_status.changed
       tags:
         - prepare
+
+    - name: Validating Checksum
+      shell: /usr/bin/md5sum -c /tmp/zcs/{{ zim_unarchive }}.tgz.md5
+      args:
+        chdir: /tmp/zcs
+      register: checksum_file
+      when: dw_status is defined
 
     - name: Disable and stop postfix
       service:
