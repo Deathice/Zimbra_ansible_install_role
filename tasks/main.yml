@@ -214,8 +214,8 @@
     - name: Your zimbra tgz file doesn't match with md5 file
       debug:
         msg: > 
-          "Please check your zimbra URL and try again
-           The tgz file and md5 file doesn't match"
+          "Please check your zimbra package downloaded and try again
+           The tgz file and md5sum file doesn't match"
       when: '"OK" not in checksum_file.stdout'
 
     - meta: end_play
