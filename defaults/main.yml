@@ -1,8 +1,8 @@
 ---
-srv_hostname: 'newzim.zimbra.local'
+srv_hostname: ''
 zim_url: https://files.zimbra.com/downloads/8.8.15_GA/zcs-8.8.15_GA_3829.RHEL7_64.20190718141144.tgz
-ip_client: 192.168.13.215
-ip_dns: 192.168.13.253
+ip_client: 
+ip_dns: 
 token_id: ''
 chatid: ''
 timezone: America/Guatemala
