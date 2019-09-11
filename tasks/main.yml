@@ -158,6 +158,16 @@
 
 - name: Download Zimbra package
   block:
+    - name: Copy resolv.conf template
+      template:
+        src: resolv.conf.j2
+        dest: /etc/resolv.conf
+        owner: root
+        group: root
+        mode: 0644
+      tags:
+        - prepare
+
     - name: Create untar directory
       file:
         path: /tmp/zcs
@@ -362,16 +372,6 @@
       template:
         src: ifcfg-interface.j2
         dest: /etc/sysconfig/network-scripts/ifcfg-{{ ansible_default_ipv4.interface }}
-        owner: root
-        group: root
-        mode: 0644
-      tags:
-        - prepare
-
-    - name: Copy resolv.conf template
-      template:
-        src: resolv.conf.j2
-        dest: /etc/resolv.conf
         owner: root
         group: root
         mode: 0644
