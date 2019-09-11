@@ -421,7 +421,7 @@
       register: dw_status
       until: dw_status.finished
       retries: 980
-      when: dw_status.changed
+      when: dw_file is defined
       tags:
         - prepare
 
