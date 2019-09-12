@@ -165,8 +165,6 @@
         owner: root
         group: root
         mode: 0644
-      tags:
-        - prepare
 
     - name: Create untar directory
       file:
@@ -241,34 +239,24 @@
     - name: randomspam
       set_fact:
         randomham: "{{ lookup('password', '/dev/null chars=ascii_letters,digits length=10') }}"
-      tags:
-        - prepare
 
     - name: waiting a few seconds
       wait_for:
         timeout: 1
       delegate_to: localhost
-      tags:
-        - prepare
 
     - name: randomspam
       set_fact:
         randomspam: "{{ lookup('password', '/dev/null chars=ascii_letters,digits length=10') }}"
-      tags:
-        - prepare
 
     - name: waiting a few seconds
       wait_for:
         timeout: 1
       delegate_to: localhost
-      tags:
-        - prepare
 
     - name: randomvirus
       set_fact:
         randomvirus: "{{ lookup('password', '/dev/null chars=ascii_letters,digits length=10') }}"
-      tags:
-        - prepare
 
     - name: waiting a few seconds
       wait_for:
@@ -278,49 +266,36 @@
     - name: Generating password
       set_fact:
         pass_config: "{{ lookup('password', '/dev/null chars=ascii_letters,digits length=10') }}"
-      tags:
-        - prepare
 
     - name: Current HOSTNAME
       debug:
         msg: "Current: {{ ansible_fqdn }} {{ ansible_domain }} {{ ansible_hostname }}"
-      tags:
-        - prepare
 
     - name: Changing FQDN
       hostname:
         name: "{{ srv_hostname }}"
       when:
         - ansible_fqdn != srv_hostname
-      tags:
-        - prepare
 
     - name: Set Fact for ansible_fqdn
       set_fact:
         ansible_fqdn: "{{ srv_hostname }}"
-      tags:
-        - prepare
 
     - name: Set Fact for ansible_domain
       set_fact:
         ansible_domain: "{{ srv_hostname.split('.')[1:] | join('.') }}"
-      tags:
-        - prepare
 
     - name: Set Fact for ansible_hostname
       set_fact:
         ansible_hostname: "{{ srv_hostname.split('.')[0] }}"
-      tags:
-        - prepare
 
     - name: Current HOSTNAME
       debug:
         msg: "NEW Current: {{ ansible_fqdn }} {{ ansible_domain }} {{ ansible_hostname }}"
-      tags:
-        - prepare
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
     - install_license == 'Y' or install_license == 'y'
+  tags: prepare
 
 - name: Manipulating files, packages and services
   block:
