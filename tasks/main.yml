@@ -406,6 +406,8 @@
         chdir: /tmp/zcs
       register: checksum_file
       when: dw_status is defined
+      tags:
+        - prepare
 
     - name: Disable and stop postfix
       service:
