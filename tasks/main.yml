@@ -390,6 +390,7 @@
         flat: yes
       notify:
         - display_message
+      changed_when: true
 
     - name: Checking download status
       async_status: jid={{ dw_file.ansible_job_id }}
