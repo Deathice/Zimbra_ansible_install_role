@@ -30,7 +30,7 @@ Notifications
 
 If you want a notification on Telegram when the ansible process is finished, do this:
 
-Change this variables values from your vars/main.yml file
+Change this variables values from your default/main.yml file
 
 - token_id: id token from your telegram chat group
 - chatid: chat id from your telegram chat group
