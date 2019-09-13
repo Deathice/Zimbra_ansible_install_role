@@ -19,11 +19,9 @@ Edit the variables into vars/main.yml file with:
 
 - srv_hostname: 'fqdn of your machine'
 - zim_url: URL for download the zimbra compress file.
+- zim_unarchive: This name will be generate automatically from zim_url variable
 - ip_client: Server IP
 - ip_dns: DNS Server IP
-- token_id: 'Token id of telegram'
-- chatid: 'Chat id of telegram'
-- timezone: timezone for configure the system (e.g. America/Guatemala)
 
 Notifications
 -------------
@@ -42,6 +40,7 @@ Then, execute the playbook adding the tg variable with true value. (e.g. -e tg=t
 
 ## Note
 This role not support backward compatibility.
+
 
 Author Information
 ------------------
