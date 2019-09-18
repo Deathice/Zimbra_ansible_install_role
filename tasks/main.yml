@@ -193,8 +193,7 @@
         dest: /tmp/zcs
       register: copy_zim_file
       when: not zimbra_file.stat.exists and item.path
-      loop:
-        "{{ zimbra_controller_file.files }}"
+      loop: "{{ zimbra_controller_file.files }}"
 
     - name: Validate if zimbra file already exist
       stat:
@@ -375,8 +374,7 @@
         src: /tmp/zcs/installZimbra-keystrokes
         dest: /tmp/installZimbra-keystrokes
         flat: yes
-      notify:
-        - display_message
+      notify: display_message
       changed_when: false
 
     - name: Checking download status
@@ -466,10 +464,8 @@
         port: "{{ item }}"
         state: enabled
         permanent: true
-      with_items:
-        - "{{ zim_ports }}"
-      notify:
-        - Restart firewalld service
+      loop: "{{ zim_ports }}"
+      notify: Restart firewalld service
       tags: prepare
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
@@ -482,7 +478,7 @@
         token: '{{ token_id }}'
         chat_id: '{{ chatid }}'
         msg: "{{ item }}"
-      with_items:
+      loop:
         - Your Zimbra installation has been completed successfully
         - Your IP Zimbra Server is {{ ansible_default_ipv4.address }}
       when: tg
