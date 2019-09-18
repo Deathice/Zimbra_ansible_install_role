@@ -235,6 +235,7 @@
     - name: randomspam
       set_fact:
         randomham: "{{ lookup('password', '/dev/null chars=ascii_letters,digits length=10') }}"
+      no_log: true
 
     - name: waiting a few seconds
       wait_for:
@@ -244,6 +245,7 @@
     - name: randomspam
       set_fact:
         randomspam: "{{ lookup('password', '/dev/null chars=ascii_letters,digits length=10') }}"
+      no_log: true
 
     - name: waiting a few seconds
       wait_for:
@@ -253,6 +255,7 @@
     - name: randomvirus
       set_fact:
         randomvirus: "{{ lookup('password', '/dev/null chars=ascii_letters,digits length=10') }}"
+      no_log: true
 
     - name: waiting a few seconds
       wait_for:
@@ -262,6 +265,7 @@
     - name: Generating password
       set_fact:
         pass_config: "{{ lookup('password', '/dev/null chars=ascii_letters,digits length=10') }}"
+      no_log: true
 
     - name: Current HOSTNAME
       debug:
@@ -305,6 +309,7 @@
         owner: root
         group: root
         remote_src: true
+      no_log: true
 
     - name: Installing packages
       yum:
