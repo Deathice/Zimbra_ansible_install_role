@@ -1,3 +1,6 @@
+![Linux Distro](https://img.shields.io/badge/platform-CentOS%20%7C%20Red%20Hat-blue.svg)
+[![Zimbra Version](https://img.shields.io/badge/Zimbra-8.8.15-blue.svg)](https://www.zimbra.com/downloads/zimbra-collaboration-open-source/)
+
 Zimbra_ansible_install_role
 =========
 Install zimbra 8.8.x with ansible. You can install your zimbra server with two forms:
