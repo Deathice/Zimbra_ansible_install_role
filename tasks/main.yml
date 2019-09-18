@@ -9,10 +9,8 @@
     - name: setting license var
       set_fact:
         install_license: "{{ install_package.user_input }}"
-  when:
-    - prompt
-  tags:
-    - prepare
+  when: prompt
+  tags: prepare
 
 - name: Zimbra Questions
   block:
@@ -153,8 +151,7 @@
   when:
     - prompt
     - install_license == 'Y' or install_license == 'y'
-  tags:
-    - prepare
+  tags: prepare
 
 - name: Download Zimbra package
   block:
@@ -274,8 +271,7 @@
     - name: Changing FQDN
       hostname:
         name: "{{ srv_hostname }}"
-      when:
-        - ansible_fqdn != srv_hostname
+      when: ansible_fqdn != srv_hostname
 
     - name: Set Fact for ansible_fqdn
       set_fact:
@@ -315,23 +311,20 @@
       yum:
         name: "{{ zim_packages }}"
         state: present
-      tags:
-        - prepare
+      tags: prepare
 
     - name: System update
       yum:
         name: '*'
         state: present
-      tags:
-        - prepare
+      tags: prepare
 
     - name: Moving dnsmasq to .original
       copy:
         remote_src: true
         src: /etc/dnsmasq.conf
         dest: /etc/dnsmasq.conf.original
-      tags:
-        - prepare
+      tags: prepare
 
     - name: Configure dnsmasq
       template:
@@ -340,8 +333,7 @@
         owner: root
         group: root
         mode: 0644
-      tags:
-        - prepare
+      tags: prepare
 
     - name: Copy ifcfg-interface template
       template:
@@ -350,38 +342,33 @@
         owner: root
         group: root
         mode: 0644
-      tags:
-        - prepare
+      tags: prepare
 
     - name: Start and enable dnsmasq service
       service:
         name: dnsmasq
         state: restarted
         enabled: true
-      tags:
-        - prepare
+      tags: prepare
 
     - name: Start and enable firewalld service
       service:
         name: firewalld
         state: restarted
         enabled: true
-      tags:
-        - prepare
+      tags: prepare
 
     - name: Copy config script zimbra file
       template:
         src: 'installZimbraScript.j2'
         dest: /tmp/zcs/installZimbraScript
-      tags:
-        - prepare
+      tags: prepare
 
     - name: Copy config script keystrokes file
       template:
         src: 'installZimbra-keystrokes.j2'
         dest: /tmp/zcs/installZimbra-keystrokes
-      tags:
-        - prepare
+      tags: prepare
 
     - name: Download response file
       fetch:
@@ -398,8 +385,7 @@
       until: dw_status.finished
       retries: 980
       when: not zimbra_file.stat.exists
-      tags:
-        - prepare
+      tags: prepare
 
     - name: Validating Checksum
       shell: /usr/bin/md5sum -c /tmp/zcs/{{ zim_unarchive }}.tgz.md5
@@ -407,16 +393,14 @@
         chdir: /tmp/zcs
       register: checksum_file
       when: dw_status is defined
-      tags:
-        - prepare
+      tags: prepare
 
     - name: Disable and stop postfix
       service:
         name: postfix
         state: stopped
         enabled: False
-      tags:
-        - prepare
+      tags: prepare
 
     - name: Configure dnsmasq
       template:
@@ -425,8 +409,7 @@
         owner: root
         group: root
         mode: 0644
-      tags:
-        - prepare
+      tags: prepare
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
     - install_license == 'Y' or install_license == 'y'
@@ -438,16 +421,14 @@
         path: /etc/hosts
         regexp: '^{{ ansible_default_ipv4.address }}.*'
         line: '{{ ansible_default_ipv4.address }} {{ ansible_fqdn }} {{ ansible_hostname }}'
-      tags:
-        - prepare
+      tags: prepare
 
     - name: unarchive zimbra file
       unarchive:
         src: /tmp/zcs/{{ zim_unarchive }}.tgz
         dest: /tmp/zcs
         remote_src: true
-      tags:
-        - prepare
+      tags: prepare
 
     - name: Installing Zimbra Collaboration, just the Software
       shell: ./install.sh -s < /tmp/zcs/installZimbra-keystrokes
@@ -489,8 +470,7 @@
         - "{{ zim_ports }}"
       notify:
         - Restart firewalld service
-      tags:
-        - prepare
+      tags: prepare
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
     - install_license == 'Y' or install_license == 'y'
@@ -505,5 +485,4 @@
       with_items:
         - Your Zimbra installation has been completed successfully
         - Your IP Zimbra Server is {{ ansible_default_ipv4.address }}
-      when:
-        - tg
+      when: tg
