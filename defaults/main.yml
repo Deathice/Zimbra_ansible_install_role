@@ -1,6 +1,7 @@
 ---
 srv_hostname: ''
 zim_url: https://files.zimbra.com/downloads/8.8.15_GA/zcs-8.8.15_GA_3829.RHEL7_64.20190718141144.tgz
+system_purpose: '' # Set to Evaluation, Testing or Production
 ip_client: 
 ip_dns: 
 token_id: ''
