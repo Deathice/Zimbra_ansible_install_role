@@ -1,0 +1,48 @@
+---
+- name: Setting the correct variables
+  copy:
+    content: "y"
+    dest: /tmp/uninstall_zim.txt
+  tags: uninstall, remove, rm, u
+
+- name: Uninstalling zimbra
+  shell: ./install.sh -u < /tmp/uninstall_zim.txt
+  args:
+    chdir: /tmp/zcs/{{ zim_unarchive }}
+  tags: uninstall, remove, rm, u
+  register: u_result
+  failed_when: u_result.rc != 1
+
+- name: Cleaning O.S. Files
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /opt/zimbra
+    - /var/log/*zimbra*
+    - /tmp/*zimbra*
+    - /tmp/hsperfdata*
+    - /tmp/install.*
+    - /tmp/*swatch*
+    - /tmp/log*
+  tags: uninstall, remove, rm, u
+
+- name: Waiting for environment
+  wait_for:
+    timeout: 60
+  delegate_to: localhost
+
+- name: Cleaning zimbra users
+  user:
+    name: "{{ item }}"
+    state: absent
+  loop:
+    - zimbra
+    - postfix
+  tags: uninstall, remove, rm, u
+
+- name: Cleaining packages
+  yum:
+    name: zimbra*
+    state: absent
+  tags: uninstall, remove, rm, u

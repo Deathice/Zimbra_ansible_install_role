@@ -226,9 +226,7 @@
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
     - install_license == 'Y' or install_license == 'y'
-  tags:
-    - prepare
-    - download
+  tags: prepare, download, uninstall, remove, rm, u
 
 - name: Generating variables
   block:
@@ -388,7 +386,7 @@
       until: dw_status.finished
       retries: 980
       when: not zimbra_file.stat.exists
-      tags: prepare
+      tags: prepare, uninstall, remove, rm, u
 
     - name: Validating Checksum
       shell: /usr/bin/md5sum -c /tmp/zcs/{{ zim_unarchive }}.tgz.md5
@@ -396,7 +394,7 @@
         chdir: /tmp/zcs
       register: checksum_file
       when: dw_status is defined
-      tags: prepare
+      tags: prepare, uninstall, remove, rm, u
 
     - name: Disable and stop postfix
       service:
@@ -456,6 +454,9 @@
       shell: su - zimbra -c 'zmcontrol restart'
       when: zmcontrol_status.failed
 
+    - name: Setting installed variable
+      set_fact:
+        installed: "installed"
   when:
     - ansible_os_family == 'RedHat'
     - ansible_distribution_major_version == '7'
@@ -478,6 +479,11 @@
 
 - name: Notifiying to user in charge
   block:
+    - name: Setting finished variable
+      set_fact:
+        installed: "{{ installed |default('uninstalled') }}"
+      tags: always
+
     - name: Task Complete
       telegram:
         token: '{{ token_id }}'
@@ -487,3 +493,10 @@
         - Your Zimbra installation has been completed successfully
         - Your IP Zimbra Server is {{ ansible_default_ipv4.address }}
       when: tg
+
+- name: Uninstalling zimbra software
+  block:
+    - name: Including uninstall procedure
+      include_tasks: uninstall.yml
+      tags: uninstall, remove, rm, u
+  when: installed == "uninstalled"

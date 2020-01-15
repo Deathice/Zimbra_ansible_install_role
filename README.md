@@ -3,7 +3,8 @@
 
 Zimbra_ansible_install_role
 =========
-With this role, you can install zimbra 8.8.x with ansible with two ways:
+
+With this role, you can install zimbra 8.8.x with ansible choosen one of the following two ways:
 
 - Default
 - Using prompt variable with true value. (e.g. -e prompt=true)
@@ -14,7 +15,8 @@ Installing the Ansible Role
 ```
 ansible-galaxy install deathice.zimbra_ansible_install_role
 ```
-or 
+
+or
 
 ```
 git clone https://github.com/Deathice/Zimbra_ansible_install_role.git
