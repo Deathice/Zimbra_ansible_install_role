@@ -300,6 +300,11 @@
       timezone:
         name: "{{ timezone }}"
 
+    - name: Download yum-utils package
+      yum:
+        name: yum-utils
+        state: latest
+                                                 
     - name: Cleanup yum transactions
       shell: yum-complete-transaction --cleanup-only
 
