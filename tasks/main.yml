@@ -219,10 +219,10 @@
     - name: Your zimbra tgz file doesnt match with md5 file
       debug:
         msg: "Please check your zimbra package downloaded and try again. The tgz file and md5sum file doesn't match"
-      when: not checksum_file.skipped
+      when: checksum_file is defined and not checksum_file.skipped
 
     - meta: end_play
-      when: not checksum_file.skipped
+      when: checksum_file is defined and not checksum_file.skipped
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
     - install_license == 'Y' or install_license == 'y'
@@ -271,7 +271,7 @@
 
     - name: Changing FQDN
       hostname:
-        name: "{{ srv_hostname }}"
+        name: "{{ srv_hostname |mandatory }}"
       when: ansible_fqdn != srv_hostname
 
     - name: Set Fact for ansible_fqdn
@@ -281,6 +281,7 @@
     - name: Set Fact for ansible_domain
       set_fact:
         ansible_domain: "{{ srv_hostname.split('.')[1:] | join('.') }}"
+      tags: only_logos
 
     - name: Set Fact for ansible_hostname
       set_fact:
@@ -484,6 +485,11 @@
   when:
     - install_zmodified == 'y' or install_zmodified == 'Y'
     - install_license == 'Y' or install_license == 'y'
+
+- name: Importing tasks
+  import_tasks: logos.yml
+  tags: only_logos
+  when: logo |bool
 
 - name: Notifiying to user in charge
   block:

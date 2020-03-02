@@ -1,0 +1,45 @@
+---
+- name: Validating url's
+  fail:
+    msg: "Ensure that the url_app and url_login are defined"
+  when: url_app |bool is not defined or url_login is not defined
+
+- name: Getting App Banner
+  get_url:
+    url: "{{ url_app }}"
+    dest: /tmp/app_banner.png
+
+- name: Getting Login Banner
+  get_url:
+    url: "{{ url_login }}"
+    dest: /tmp/login_banner.png
+
+- name: Validating measurements of App Banner (logo)
+  command: file /tmp/app_banner.png
+  register: app_bann_status
+
+- name: Validating measurements of Login Banner (logo)
+  command: file /tmp/login_banner.png
+  register: login_bann_status
+
+- name: Comparing dimensions
+  assert:
+    that:
+      - "'200 x 35' in app_bann_status.stdout"
+      - "'PNG' in app_bann_status.stdout"
+      - "'440 x 60' in login_bann_status.stdout or '440 x 65' in login_bann_status.stdout"
+      - "'PNG' in login_bann_status.stdout"
+    fail_msg: "Ensure that the app banner has 200 x 35 (PNG type) and login banner has 440 x 60 | 440 x 65 (PNG type)"
+    success_msg: "Your application banner and login banner files are ok!"
+
+- name: Configuring zimbra Skin Logo, Login Banner and App Banner
+  shell: "{{ item }}"
+  loop:
+    - su - zimbra -c "zmprov md {{ ansible_domain }} zimbraSkinLogoURL {{ url_redirect |default('https://{{ srv_hostname }}') }}"
+    - su - zimbra -c "zmprov md {{ ansible_domain }} zimbraSkinLogoLoginBanner {{ url_login }}"
+    - su - zimbra -c "zmprov md {{ ansible_domain }} zimbraSkinLogoAppBanner {{ url_app }}"
+  loop_control:
+    pause: 30
+
+- name: Change to zimbra user and execute zmcontrol restart
+  shell: su - zimbra -c 'zmcontrol restart'

@@ -1,4 +1,5 @@
 ---
+# General variables
 srv_hostname: ''
 zim_url: https://files.zimbra.com/downloads/8.8.15_GA/zcs-8.8.15_GA_3829.RHEL7_64.20190718141144.tgz
 system_purpose: '' # Set to Evaluation, Testing or Production
@@ -7,3 +8,5 @@ ip_dns:
 token_id: ''
 chatid: ''
 timezone: America/Guatemala
+# Logo variables
+logo: false # If true, remember set the url_app and url_login variable, see README.md file
