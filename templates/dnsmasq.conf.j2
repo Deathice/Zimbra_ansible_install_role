@@ -1,5 +1,6 @@
 listen-address=127.0.0.1
 domain={{ ansible_domain }}
 mx-host={{ ansible_domain }},{{ ansible_hostname }}.{{ ansible_domain }},10
+mx-host={{ ansible_hostname }}.{{ ansible_domain }},{{ ansible_hostname }}.{{ ansible_domain }},20
 address=/{{ ansible_hostname }}.{{ ansible_domain }}/{{ ansible_default_ipv4.address }}
 conf-dir=/etc/dnsmasq.d
